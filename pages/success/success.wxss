@@ -1,0 +1,657 @@
+/* success.wxss */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40rpx 30rpx;
+}
+
+/* 成功头部样式 */
+.success-header {
+  text-align: center;
+  margin-bottom: 50rpx;
+  color: white;
+  position: relative;
+}
+
+.success-icon {
+  margin-bottom: 30rpx;
+  position: relative;
+}
+
+.check-mark {
+  width: 120rpx;
+  height: 120rpx;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: white;
+  font-size: 60rpx;
+  font-weight: bold;
+  animation: checkmarkScale 0.6s ease-out;
+  box-shadow: 0 10rpx 30rpx rgba(76, 175, 80, 0.3);
+}
+
+@keyframes checkmarkScale {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.success-title {
+  display: block;
+  font-size: 42rpx;
+  font-weight: 700;
+  margin-bottom: 20rpx;
+  text-shadow: 2rpx 2rpx 4rpx rgba(0,0,0,0.3);
+  animation: slideInUp 0.8s ease-out 0.2s both;
+}
+
+.success-subtitle {
+  display: block;
+  font-size: 28rpx;
+  opacity: 0.9;
+  line-height: 1.5;
+  max-width: 500rpx;
+  margin: 0 auto;
+  animation: slideInUp 0.8s ease-out 0.4s both;
+}
+
+.success-animation {
+  position: absolute;
+  top: -20rpx;
+  right: 0;
+  animation: bounce 2s infinite;
+}
+
+.celebration {
+  font-size: 40rpx;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20rpx);
+  }
+  60% {
+    transform: translateY(-10rpx);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 预订凭证样式 */
+.voucher-card {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+  border: 3rpx solid #667eea;
+  position: relative;
+  overflow: hidden;
+}
+
+.voucher-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8rpx;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.voucher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.voucher-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.qr-code {
+  width: 120rpx;
+  height: 120rpx;
+  background: #f0f0f0;
+  border: 2rpx dashed #ccc;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-text {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+}
+
+.qr-subtitle {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.booking-number {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 25rpx;
+  border-radius: 12rpx;
+  border-left: 6rpx solid #667eea;
+}
+
+.number-label {
+  color: #666;
+  font-size: 28rpx;
+  margin-right: 20rpx;
+}
+
+.number-value {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #667eea;
+  font-family: 'Courier New', monospace;
+}
+
+.copy-btn {
+  background: #667eea;
+  color: white;
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  border: none;
+}
+
+/* 预订详情样式 */
+.booking-details {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.details-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.status-badge {
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.status-badge.success {
+  background: #e8f5e8;
+  color: #4CAF50;
+  border: 2rpx solid #4CAF50;
+}
+
+.details-content {
+  
+}
+
+.detail-row {
+  margin-bottom: 30rpx;
+}
+
+.detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.detail-row.amount-row {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0fff0 100%);
+  padding: 25rpx;
+  border-radius: 16rpx;
+  border-left: 6rpx solid #4CAF50;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.item-icon {
+  font-size: 32rpx;
+  width: 40rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-label {
+  display: block;
+  color: #666;
+  font-size: 26rpx;
+  margin-bottom: 6rpx;
+}
+
+.item-value {
+  display: block;
+  color: #333;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.item-value.price {
+  color: #4CAF50;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+/* 球场信息样式 */
+.court-info-section {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  margin-bottom: 25rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 25rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-icon {
+  font-size: 28rpx;
+  flex-shrink: 0;
+  width: 32rpx;
+  text-align: center;
+}
+
+.info-text {
+  flex: 1;
+}
+
+.info-label {
+  display: block;
+  color: #666;
+  font-size: 24rpx;
+  margin-bottom: 4rpx;
+}
+
+.info-value {
+  display: block;
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.info-action {
+  background: #667eea;
+  color: white;
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  border: none;
+}
+
+/* 温馨提示样式 */
+.tips-section {
+  padding: 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.tips-header {
+  margin-bottom: 25rpx;
+}
+
+.tips-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  border-left: 4rpx solid #667eea;
+}
+
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-item.important {
+  background: #fff3cd;
+  border-left-color: #ffc107;
+}
+
+.tip-icon {
+  font-size: 28rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.tip-text {
+  color: #555;
+  font-size: 26rpx;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+  margin-bottom: 40rpx;
+}
+
+.button-row {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.button-row:last-child {
+  margin-bottom: 0;
+}
+
+.action-buttons button {
+  padding: 28rpx 40rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.btn-icon {
+  font-size: 24rpx;
+}
+
+/* 底部信息 */
+.footer-info {
+  text-align: center;
+  padding: 30rpx 20rpx;
+  color: white;
+  opacity: 0.8;
+}
+
+.footer-text {
+  display: block;
+  font-size: 28rpx;
+  margin-bottom: 8rpx;
+}
+
+.footer-subtext {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.7;
+}
+
+/* 响应式布局 */
+@media (max-width: 600rpx) {
+  .voucher-header {
+    flex-direction: column;
+    gap: 20rpx;
+    align-items: flex-start;
+  }
+  
+  .qr-code {
+    align-self: center;
+  }
+  
+  .booking-number {
+    flex-direction: column;
+    text-align: center;
+    gap: 15rpx;
+  }
+  
+  .button-row {
+    flex-direction: column;
+  }
+  
+  .half-width {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* 预订详情样式 */
+.booking-details {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30rpx;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.details-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.booking-id {
+  background: #f8f9ff;
+  padding: 12rpx 20rpx;
+  border-radius: 20rpx;
+  border: 2rpx solid #667eea;
+  flex-shrink: 0;
+}
+
+.id-label {
+  color: #667eea;
+  font-size: 24rpx;
+  margin-right: 8rpx;
+}
+
+.id-value {
+  color: #667eea;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.details-content {
+  
+}
+
+.detail-row {
+  margin-bottom: 30rpx;
+}
+
+.detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.detail-row.amount-row {
+  background: #f8f9fa;
+  padding: 25rpx;
+  border-radius: 16rpx;
+  border-left: 6rpx solid #e74c3c;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.item-icon {
+  font-size: 32rpx;
+  width: 40rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-label {
+  display: block;
+  color: #666;
+  font-size: 26rpx;
+  margin-bottom: 6rpx;
+}
+
+.item-value {
+  display: block;
+  color: #333;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.item-value.price {
+  color: #e74c3c;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+/* 温馨提示样式 */
+.tips-section {
+  padding: 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.tips-header {
+  margin-bottom: 25rpx;
+}
+
+.tips-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.tips-content {
+  
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  padding: 16rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+}
+
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-icon {
+  font-size: 28rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.tip-text {
+  color: #555;
+  font-size: 26rpx;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.action-buttons button {
+  padding: 28rpx 40rpx;
+  border-radius: 16rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.btn-icon {
+  font-size: 28rpx;
+}
+
+/* 响应式布局 */
+@media (min-width: 600rpx) {
+  .action-buttons {
+    flex-direction: row;
+  }
+  
+  .action-buttons button {
+    flex: 1;
+  }
+  
+  .details-header {
+    align-items: center;
+  }
+}

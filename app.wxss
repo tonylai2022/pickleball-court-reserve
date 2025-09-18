@@ -1,0 +1,131 @@
+/* 全局样式 */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20rpx;
+}
+
+/* 通用按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  padding: 24rpx 40rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 2rpx solid #dee2e6;
+  border-radius: 20rpx;
+  padding: 24rpx 40rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+/* 卡片样式 */
+.card {
+  background: white;
+  border-radius: 30rpx;
+  box-shadow: 0 20rpx 40rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: 30rpx;
+}
+
+/* 文本样式 */
+.text-primary {
+  color: #667eea;
+}
+
+.text-secondary {
+  color: #6c757d;
+}
+
+.text-success {
+  color: #28a745;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.text-warning {
+  color: #ffc107;
+}
+
+/* 间距工具类 */
+.mt-10 { margin-top: 20rpx; }
+.mt-15 { margin-top: 30rpx; }
+.mt-20 { margin-top: 40rpx; }
+.mb-10 { margin-bottom: 20rpx; }
+.mb-15 { margin-bottom: 30rpx; }
+.mb-20 { margin-bottom: 40rpx; }
+.pt-10 { padding-top: 20rpx; }
+.pt-15 { padding-top: 30rpx; }
+.pt-20 { padding-top: 40rpx; }
+.pb-10 { padding-bottom: 20rpx; }
+.pb-15 { padding-bottom: 30rpx; }
+.pb-20 { padding-bottom: 40rpx; }
+
+/* Flexbox工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* 文字对齐 */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* 圆角 */
+.rounded {
+  border-radius: 10rpx;
+}
+
+.rounded-lg {
+  border-radius: 20rpx;
+}
+
+.rounded-xl {
+  border-radius: 30rpx;
+}
+
+/* 阴影 */
+.shadow {
+  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.1);
+}
+
+.shadow-lg {
+  box-shadow: 0 20rpx 40rpx rgba(0,0,0,0.15);
+}

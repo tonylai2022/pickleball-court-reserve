@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="TRK达鲁酷运动餐酒吧 - 匹克球场在线预订系统">
+	<meta name="keywords" content="匹克球,球场预订,TRK,运动,预约">
+	<title>TRK 匹克球场预订</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="TRK球场预订">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<style>/* tiny fix to ensure full-height */ html,body{height:100%;} </style>
+	</head>
+<body>
+	<div id="loading" class="loading-overlay">
+		<div class="loading-spinner">
+			<div class="spinner"></div>
+			<p>加载中...</p>
+		</div>
+	</div>
+
+	<div id="app" class="app-container">
+		<div id="home-page" class="page active">
+			<header class="header">
+				<div class="header-gradient">
+					<h1 class="title">TRK 匹克球场预订</h1>
+					<p class="subtitle">Pickleball Court Reservation</p>
+				</div>
+			</header>
+
+			<main class="main-content">
+				<div class="court-card card" onclick="openBooking()">
+					<div class="court-image">
+						<img src="images/court.jpeg" alt="TRK匹克球场" class="court-img">
+						<div class="court-status">可预订</div>
+						<div class="court-overlay">
+							<button class="play-btn">▶</button>
+						</div>
+					</div>
+
+					<div class="court-info">
+						<h2 class="court-name">Urban Dinker Court</h2>
+						<p class="court-description">专业级匹克球场，配备优质地面和专业照明设备。位置便利，停车方便。</p>
+                        
+						<div class="price-info">
+							<span class="price">¥120</span>
+							<span class="duration">/ 小时</span>
+						</div>
+
+						<div class="court-features">
+							<div class="feature">
+								<span class="feature-icon">🏸</span>
+								<span class="feature-text">专业球拍</span>
+							</div>
+							<div class="feature">
+								<span class="feature-icon">💡</span>
+								<span class="feature-text">LED照明</span>
+							</div>
+							<div class="feature">
+								<span class="feature-icon">🅿️</span>
+								<span class="feature-text">免费停车</span>
+							</div>
+						</div>
+
+						<button class="book-btn btn-primary" onclick="openBooking()">
+							立即预订
+						</button>
+					</div>
+				</div>
+
+				<div class="info-section card">
+					<div class="info-header">
+						<h3 class="info-title">球场信息</h3>
+					</div>
+					<div class="info-content">
+						<div class="info-item">
+							<span class="info-icon">🕒</span>
+							<div class="info-text">
+								<span class="info-label">营业时间</span>
+								<span class="info-value">08:00 - 22:00</span>
+							</div>
+						</div>
+						<div class="info-item">
+							<span class="info-icon">📞</span>
+							<div class="info-text">
+								<span class="info-label">联系电话</span>
+								<span class="info-value">400-888-8888</span>
+							</div>
+							<button class="info-action" onclick="makePhoneCall('400-888-8888')">拨打</button>
+						</div>
+						<div class="info-item">
+							<span class="info-icon">📍</span>
+							<div class="info-text">
+								<span class="info-label">球场地址</span>
+								<span class="info-value">TRK·达鲁酷运动餐酒吧(友邦金融中心店)<br>公平路209号友邦金融中心地下二层LG2层201号</span>
+							</div>
+							<button class="info-action" onclick="openMap()">导航</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="footer-links">
+					<button class="footer-link" onclick="showPage('about')">关于我们</button>
+					<button class="footer-link" onclick="showPage('terms')">服务条款</button>
+					<button class="footer-link" onclick="showPage('privacy')">隐私政策</button>
+				</div>
+			</main>
+		</div>
+
+		<div id="booking-page" class="page">
+			<header class="page-header">
+				<button class="back-btn" onclick="goBack()">←</button>
+				<h1 class="page-title">选择时间</h1>
+				<div class="header-placeholder"></div>
+			</header>
+
+			<main class="booking-content">
+				<div class="date-section card">
+					<h3 class="section-title">选择日期</h3>
+					<div class="date-picker">
+						<div class="date-scroll" id="dateScroll"></div>
+					</div>
+				</div>
+
+				<div class="time-section card">
+					<h3 class="section-title">选择时间段</h3>
+					<div class="time-grid" id="timeGrid"></div>
+				</div>
+
+				<div class="booking-summary card">
+					<h3 class="section-title">预订摘要</h3>
+					<div class="summary-content">
+						<div class="summary-item">
+							<span class="summary-label">球场</span>
+							<span class="summary-value">Urban Dinker Court</span>
+						</div>
+						<div class="summary-item">
+							<span class="summary-label">日期</span>
+							<span class="summary-value" id="selectedDate">请选择日期</span>
+						</div>
+						<div class="summary-item">
+							<span class="summary-label">时间</span>
+							<span class="summary-value" id="selectedTime">请选择时间</span>
+						</div>
+						<div class="summary-item total">
+							<span class="summary-label">总价</span>
+							<span class="summary-value price" id="totalPrice">¥0</span>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<footer class="booking-footer">
+				<button class="btn-primary" id="confirmBooking" onclick="goToPayment()" disabled>
+					确认预订
+				</button>
+			</footer>
+		</div>
+
+		<div id="payment-page" class="page">
+			<header class="page-header">
+				<button class="back-btn" onclick="goBack()">←</button>
+				<h1 class="page-title">确认支付</h1>
+				<div class="header-placeholder"></div>
+			</header>
+
+			<main class="payment-content">
+				<div class="order-summary card">
+					<h3 class="section-title">订单摘要</h3>
+					<div class="order-details" id="orderDetails"></div>
+				</div>
+
+				<div class="payment-section card">
+					<h3 class="section-title">支付方式</h3>
+					<div class="payment-options">
+						<div class="payment-option selected" data-method="wechat">
+							<div class="payment-icon wechat">💬</div>
+							<div class="payment-info">
+								<span class="payment-name">微信支付</span>
+								<span class="payment-desc">安全便捷的支付方式</span>
+							</div>
+							<div class="payment-radio">
+								<div class="radio checked"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="payment-amount card">
+					<div class="amount-row">
+						<span class="amount-label">实付金额</span>
+						<span class="amount-value" id="paymentAmount">¥0</span>
+					</div>
+				</div>
+			</main>
+
+			<footer class="payment-footer">
+				<button class="btn-secondary" onclick="goBack()">返回修改</button>
+				<button class="btn-primary" id="payNow" onclick="processPayment()">立即支付</button>
+			</footer>
+		</div>
+
+		<div id="success-page" class="page">
+			<main class="success-content">
+				<div class="success-header">
+					<div class="success-icon"><div class="check-mark">✓</div></div>
+					<h1 class="success-title">预订成功！</h1>
+					<p class="success-subtitle">您的匹克球场已预订成功，期待您的到来！</p>
+					<div class="celebration">🎉</div>
+				</div>
+
+				<div class="voucher-card card">
+					<div class="voucher-header">
+						<h3 class="voucher-title">预订凭证</h3>
+						<div class="qr-code"><div class="qr-placeholder"><span class="qr-text">二维码</span><span class="qr-subtitle">到场出示</span></div></div>
+					</div>
+					<div class="voucher-content">
+						<div class="booking-number">
+							<span class="number-label">预订编号</span>
+							<span class="number-value" id="confirmationNumber"></span>
+							<button class="copy-btn" onclick="copyBookingNumber()">复制</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="booking-details card">
+					<div class="details-header">
+						<h3 class="details-title">预订详情</h3>
+						<div class="status-badge success"><span class="status-text">已确认</span></div>
+					</div>
+					<div class="details-content" id="bookingDetails"></div>
+				</div>
+
+				<div class="action-buttons">
+					<button class="action-btn" onclick="shareBooking()"><span class="btn-icon">📤</span><span class="btn-text">分享预订</span></button>
+					<button class="action-btn" onclick="addToCalendar()"><span class="btn-icon">📅</span><span class="btn-text">加入日历</span></button>
+					<button class="action-btn" onclick="contactSupport()"><span class="btn-icon">📞</span><span class="btn-text">联系客服</span></button>
+				</div>
+			</main>
+			<footer class="success-footer"><button class="btn-primary" onclick="goHome()">返回首页</button></footer>
+		</div>
+
+		<div id="about-page" class="page">
+			<header class="page-header"><button class="back-btn" onclick="goBack()">←</button><h1 class="page-title">关于我们</h1><div class="header-placeholder"></div></header>
+			<main class="about-content">
+				<div class="about-card card">
+					<div class="app-info"><img src="images/court.svg" alt="TRK Logo" class="app-logo"><h2 class="app-name">TRK 匹克球场预订</h2><p class="version">版本 1.0.0</p></div>
+					<div class="venue-info"><h3>TRK·达鲁酷运动餐酒吧</h3><p class="venue-address">友邦金融中心店</p><p class="venue-desc">专业匹克球场，设施完善，环境优雅</p></div>
+				</div>
+			</main>
+		</div>
+
+		<div id="terms-page" class="page">
+			<header class="page-header"><button class="back-btn" onclick="goBack()">←</button><h1 class="page-title">服务条款</h1><div class="header-placeholder"></div></header>
+			<main class="terms-content"><div class="terms-card card"><p class="last-updated">最后更新：2025年9月18日</p><div class="terms-text"><h3>1. 服务说明</h3><p>TRK匹克球场预订系统为用户提供在线球场预订服务...</p></div></div></main>
+		</div>
+
+		<div id="privacy-page" class="page">
+			<header class="page-header"><button class="back-btn" onclick="goBack()">←</button><h1 class="page-title">隐私政策</h1><div class="header-placeholder"></div></header>
+			<main class="privacy-content"><div class="privacy-card card"><p class="last-updated">最后更新：2025年9月18日</p><div class="privacy-text"><h3>1. 信息收集</h3><p>本系统仅收集您进行球场预订所必需的信息...</p></div></div></main>
+		</div>
+	</div>
+
+	<div id="modal-overlay" class="modal-overlay">
+		<div class="modal-content">
+			<div class="modal-header"><h3 id="modal-title">提示</h3><button class="modal-close" onclick="closeModal()">×</button></div>
+			<div class="modal-body"><p id="modal-message">消息内容</p></div>
+			<div class="modal-footer"><button class="btn-secondary" id="modal-cancel" onclick="closeModal()">取消</button><button class="btn-primary" id="modal-confirm" onclick="closeModal()">确定</button></div>
+		</div>
+	</div>
+
+	<div id="toast" class="toast"><span id="toast-message">消息</span></div>
+
+	<script src="js/app.js"></script>
+	</body>
+	</html>

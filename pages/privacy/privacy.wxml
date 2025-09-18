@@ -1,0 +1,83 @@
+<!--privacy.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="page-title">隐私政策</text>
+    <text class="last-updated">最后更新：{{updateDate}}</text>
+  </view>
+
+  <scroll-view class="content" scroll-y="true">
+    <view class="section">
+      <text class="section-title">1. 信息收集</text>
+      <text class="section-content">
+        本小程序仅收集您进行球场预订所必需的信息：
+        • 微信头像和昵称（用于显示预订者信息）
+        • 预订时间和场地偏好
+        • 位置信息（仅用于计算到球场的距离，可选）
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">2. 信息使用</text>
+      <text class="section-content">
+        您的个人信息仅用于：
+        • 处理球场预订请求
+        • 向您发送预订确认和提醒
+        • 改善小程序服务质量
+        • 客户服务和技术支持
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">3. 信息保护</text>
+      <text class="section-content">
+        我们承诺：
+        • 不会将您的个人信息出售给第三方
+        • 采用行业标准的安全措施保护您的数据
+        • 定期删除不必要的历史预订记录
+        • 遵守相关法律法规要求
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">4. 第三方服务</text>
+      <text class="section-content">
+        本小程序使用以下第三方服务：
+        • 微信支付（用于处理预订付款）
+        • 微信地图服务（用于显示球场位置）
+        这些服务有各自的隐私政策，请参考相关服务的隐私条款。
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">5. 用户权利</text>
+      <text class="section-content">
+        您有权：
+        • 查看、修改或删除您的个人信息
+        • 撤回对个人信息处理的同意
+        • 投诉和举报个人信息处理活动
+        • 要求我们更正不准确的个人信息
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">6. 联系我们</text>
+      <text class="section-content">
+        如您对本隐私政策有任何疑问或建议，请联系：
+        TRK·达鲁酷运动餐酒吧
+        地址：友邦金融中心店
+        电话：{{contactPhone}}
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">7. 政策更新</text>
+      <text class="section-content">
+        我们可能会不时更新本隐私政策。重大更改时，我们会在小程序内显著位置通知您。继续使用小程序即表示您同意更新后的隐私政策。
+      </text>
+    </view>
+  </scroll-view>
+
+  <view class="footer">
+    <button class="btn-primary" bindtap="goBack">我已了解</button>
+  </view>
+</view>

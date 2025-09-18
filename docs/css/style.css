@@ -1,0 +1,187 @@
+/* Copied from web-app/css/style.css */
+
+/* Core Reset */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+:root{
+  --primary:#10b981; /* emerald-500 */
+  --primary-600:#059669;
+  --primary-700:#047857;
+  --surface:#ffffff;
+  --muted:#64748b; /* slate-500 */
+  --border:#e2e8f0;
+  --shadow:0 10px 20px rgba(2,6,23,0.06),0 2px 6px rgba(2,6,23,0.06);
+}
+
+.app-container{ max-width: 920px; margin: 0 auto; }
+.page{ display:none; min-height:100vh; }
+.page.active{ display:block; }
+
+.header{ position: sticky; top: 0; z-index: 10; }
+.header-gradient{
+  background: linear-gradient(135deg, #064e3b 0%, #10b981 60%, #34d399 100%);
+  color: #fff; padding: 32px 20px 60px; text-align:center;
+}
+.title{ margin: 0; font-size: 28px; font-weight: 800; letter-spacing:.5px; }
+.subtitle{ margin: 6px 0 0; opacity:.9; font-weight:500; }
+
+.main-content{ margin-top: -40px; padding: 0 16px 24px; }
+.card{ background: var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow: var(--shadow); overflow:hidden; margin-bottom:16px; }
+
+/* Court card */
+.court-card{ display:grid; grid-template-columns: 1fr; gap: 0; cursor:pointer; }
+.court-image{ position: relative; height: 200px; overflow:hidden; }
+.court-img{ width:100%; height:100%; object-fit: cover; display:block; }
+.court-status{ position:absolute; left:12px; top:12px; background: rgba(16,185,129,.95); color:#fff; padding:4px 10px; border-radius:9999px; font-size:12px; font-weight:700; box-shadow: var(--shadow); }
+.court-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; transition:.25s; background: radial-gradient(transparent, rgba(0,0,0,.25)); }
+.court-card:hover .court-overlay{ opacity:1; }
+.play-btn{ width:56px; height:56px; border-radius:9999px; border:0; background:rgba(255,255,255,.9); display:grid; place-items:center; font-size:20px; cursor:pointer; box-shadow: var(--shadow); }
+
+.court-info{ padding:16px; }
+.court-name{ margin:0 0 6px; font-size:22px; }
+.court-description{ margin:0 0 10px; color: var(--muted); }
+.price-info{ display:flex; align-items:baseline; gap:6px; margin:12px 0; }
+.price{ font-weight:800; font-size:24px; color:#0f766e; }
+.duration{ color: var(--muted); }
+.court-features{ display:flex; gap:12px; flex-wrap:wrap; margin-top: 8px; }
+.feature{ display:flex; align-items:center; gap:8px; background:#f1f5f9; color:#0f172a; border-radius:9999px; padding:6px 10px; }
+
+.btn-primary, .btn-secondary{ height:44px; padding:0 16px; border-radius:10px; border:1px solid transparent; cursor:pointer; font-weight:700; }
+.btn-primary{ background: var(--primary); color:#fff; box-shadow: var(--shadow); }
+.btn-primary:hover{ background: var(--primary-600); }
+.btn-secondary{ background:#fff; border-color: var(--border); color:#0f172a; }
+.btn-secondary:hover{ background:#f8fafc; }
+.book-btn{ margin-top:12px; width:100%; }
+
+/* Info section */
+.info-section{ padding: 12px 14px; }
+.info-header{ padding:0 4px 8px; border-bottom:1px dashed var(--border); }
+.info-title{ margin:0; font-size:16px; }
+.info-content{ display:flex; flex-direction:column; gap:10px; padding-top:10px; }
+.info-item{ display:flex; align-items:center; gap:10px; justify-content:space-between; }
+.info-text{ flex:1; }
+.info-label{ display:block; color: var(--muted); font-size:12px; }
+.info-value{ display:block; font-weight:600; }
+.info-action{ border:0; background:#ecfeff; color:#0e7490; padding:6px 10px; border-radius:8px; cursor:pointer; }
+
+.footer-links{ display:flex; gap:12px; justify-content:center; padding: 8px 0 24px; }
+.footer-link{ border:0; background:transparent; color:#0f766e; cursor:pointer; }
+
+/* Booking */
+.page-header{ display:flex; align-items:center; justify-content:space-between; padding: 10px 12px; position: sticky; top:0; background: #ffffffd6; backdrop-filter: blur(6px); border-bottom:1px solid #eef2f7; z-index: 10; }
+.back-btn{ border:0; background:#f1f5f9; width:36px; height:36px; border-radius:10px; cursor:pointer; font-size:18px; display:grid; place-items:center; }
+.page-title{ margin:0; font-size:18px; font-weight:800; }
+.header-placeholder{ width:36px; }
+
+.booking-content{ padding: 12px 14px; }
+.section-title{ margin:0 0 8px; font-size:15px; }
+.date-section, .time-section, .booking-summary{ padding:12px; }
+
+.date-picker{ overflow-x:auto; }
+.date-scroll{ display:flex; gap:10px; }
+.date-chip{ min-width: 90px; border:1px solid var(--border); border-radius:10px; padding:10px; text-align:center; cursor:pointer; }
+.date-chip.active{ border-color: var(--primary); background:#ecfdf5; }
+.day{ display:block; font-weight:700; }
+.date{ display:block; color: var(--muted); font-size:12px; }
+
+.time-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; }
+.time-slot{ padding:10px; border:1px solid var(--border); border-radius:10px; text-align:center; cursor:pointer; }
+.time-slot.active{ border-color: var(--primary); background:#ecfdf5; }
+.time-slot.unavailable{ opacity:.45; pointer-events:none; text-decoration:line-through; }
+
+.summary-content{ display:grid; gap:8px; }
+.summary-item{ display:flex; align-items:center; justify-content:space-between; }
+.summary-item.total .price{ color:#16a34a; }
+
+.booking-footer, .payment-footer, .success-footer{ position: sticky; bottom: 0; background:#ffffffd6; backdrop-filter: blur(6px); padding: 10px 14px; border-top:1px solid #eef2f7; display:flex; gap:10px; justify-content:space-between; }
+
+/* Payment */
+.payment-content{ padding: 12px 14px; }
+.order-summary, .payment-section, .payment-amount{ padding:12px; }
+.order-details{ display:grid; gap:10px; }
+.order-row{ display:flex; align-items:center; justify-content:space-between; }
+.payment-options{ display:grid; gap:10px; }
+.payment-option{ display:flex; align-items:center; justify-content:space-between; border:1px solid var(--border); border-radius:12px; padding:10px; }
+.payment-option.selected{ border-color: var(--primary); background:#ecfdf5; }
+.payment-icon{ width:36px; height:36px; display:grid; place-items:center; border-radius:8px; background:#e2e8f0; }
+.payment-icon.wechat{ background:#e6fff4; color:#10b981; }
+.payment-info{ flex:1; padding: 0 10px; }
+.payment-name{ font-weight:800; }
+.payment-desc{ color: var(--muted); font-size:12px; }
+.payment-radio .radio{ width:18px; height:18px; border-radius:9999px; border:2px solid var(--primary); display:grid; place-items:center; }
+.payment-radio .radio::after{ content:""; width:10px; height:10px; border-radius:9999px; background: var(--primary); display:block; }
+.payment-amount .amount-row{ display:flex; align-items:center; justify-content:space-between; font-size:18px; font-weight:800; }
+
+/* Success */
+.success-content{ padding: 20px 16px 100px; max-width:720px; margin:0 auto; }
+.success-header{ text-align:center; padding: 8px 0 4px; position:relative; }
+.success-icon{ width:72px; height:72px; margin: 0 auto 10px; border-radius:9999px; background:#ecfdf5; display:grid; place-items:center; box-shadow: var(--shadow); }
+.check-mark{ color:#16a34a; font-size:36px; font-weight:900; }
+.success-title{ margin: 0 0 6px; font-size:22px; }
+.success-subtitle{ margin:0; color: var(--muted); }
+.celebration{ position:absolute; right:12px; top:-8px; font-size:28px; }
+
+.voucher-card{ padding:12px; }
+.voucher-header{ display:flex; align-items:center; justify-content:space-between; }
+.qr-code{ width:96px; height:96px; background:#f1f5f9; border-radius:12px; display:grid; place-items:center; }
+.qr-placeholder{ text-align:center; font-size:12px; color: var(--muted); }
+.voucher-content{ margin-top:10px; }
+.booking-number{ display:flex; align-items:center; gap:8px; justify-content:flex-start; }
+.number-label{ color: var(--muted); }
+.number-value{ font-weight:800; }
+.copy-btn{ border:0; background:#eef2ff; color:#3730a3; padding:6px 10px; border-radius:8px; cursor:pointer; }
+
+.booking-details{ padding:12px; }
+.details-header{ display:flex; align-items:center; justify-content:space-between; }
+.status-badge{ border-radius:9999px; padding:4px 10px; font-size:12px; font-weight:800; }
+.status-badge.success{ background:#ecfdf5; color:#16a34a; }
+.details-content{ display:grid; gap:10px; }
+.detail-row{ display:flex; align-items:center; justify-content:space-between; }
+.detail-label{ color: var(--muted); }
+.detail-value{ font-weight:700; }
+
+.action-buttons{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:12px; }
+.action-btn{ border:1px solid var(--border); background:#fff; border-radius:12px; padding:10px; display:grid; gap:8px; place-items:center; cursor:pointer; }
+.action-btn:hover{ background:#f8fafc; }
+.btn-icon{ font-size:18px; }
+
+/* About/Terms/Privacy */
+.about-content, .terms-content, .privacy-content{ padding: 14px; }
+.about-card, .terms-card, .privacy-card{ padding: 14px; }
+.app-info{ text-align:center; }
+.app-logo{ width:96px; height:96px; border-radius:16px; object-fit:cover; box-shadow: var(--shadow); }
+.app-name{ margin: 10px 0 4px; }
+.version{ color: var(--muted); margin:0; }
+
+/* Modal */
+.modal-overlay{ position: fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(2,6,23,0.5); z-index: 100; padding: 16px; }
+.modal-overlay.show{ display:flex; }
+.modal-content{ background:#fff; border-radius:16px; width: min(520px, 100%); box-shadow: var(--shadow); overflow:hidden; }
+.modal-header{ display:flex; align-items:center; justify-content:space-between; padding: 12px 14px; border-bottom:1px solid var(--border); }
+.modal-body{ padding: 14px; color:#0f172a; }
+.modal-footer{ display:flex; justify-content:flex-end; gap:10px; padding: 12px 14px; border-top:1px solid var(--border); }
+.modal-close{ border:0; background:#f1f5f9; width:36px; height:36px; border-radius:10px; cursor:pointer; font-size:18px; display:grid; place-items:center; }
+
+/* Toast */
+.toast{ position: fixed; left:50%; transform:translateX(-50%); bottom: 20px; background:#111827; color:#fff; padding:10px 14px; border-radius:10px; opacity:0; pointer-events:none; transition: opacity .25s, transform .25s; z-index: 110; }
+.toast.show{ opacity:1; transform: translateX(-50%) translateY(-6px); }
+
+/* Loading */
+.loading-overlay{ position: fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(248,250,252,0.9); z-index: 200; }
+.loading-overlay.show{ display:flex; }
+.loading-spinner{ display:grid; place-items:center; gap:10px; }
+.spinner{ width:36px; height:36px; border:4px solid #e5e7eb; border-top-color: var(--primary); border-radius:9999px; animation: spin 1s linear infinite; }
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+/* Responsive */
+@media (min-width: 720px){
+  .court-card{ grid-template-columns: 1.2fr 1fr; }
+  .court-image{ height: 100%; min-height: 240px; }
+}

@@ -1,0 +1,287 @@
+/* payment.wxss */
+
+.container {
+  padding: 20rpx;
+  padding-bottom: 140rpx; /* 为底部按钮留出空间 */
+}
+
+/* 订单摘要样式 */
+.order-summary {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.summary-header {
+  margin-bottom: 30rpx;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.order-details {
+  background: #f8f9fa;
+  padding: 30rpx;
+  border-radius: 20rpx;
+  border-left: 8rpx solid #667eea;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 10rpx 0;
+}
+
+.detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.detail-item.total {
+  border-top: 2rpx solid #dee2e6;
+  margin-top: 20rpx;
+  padding-top: 30rpx;
+  font-weight: 600;
+  font-size: 32rpx;
+}
+
+.detail-label {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.detail-value.price {
+  color: #e74c3c;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+/* 支付方式样式 */
+.payment-section {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.payment-options {
+  
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  border: 4rpx solid #e9ecef;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.payment-option:last-child {
+  margin-bottom: 0;
+}
+
+.payment-option.selected {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.payment-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.payment-icon.wechat {
+  background: #07C160;
+}
+
+.payment-icon.alipay {
+  background: #1677FF;
+}
+
+.payment-icon.card {
+  background: #6c757d;
+}
+
+.payment-logo {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.payment-info {
+  flex-grow: 1;
+}
+
+.payment-name {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+  color: #2c3e50;
+}
+
+.payment-desc {
+  display: block;
+  color: #666;
+  font-size: 26rpx;
+}
+
+.payment-radio {
+  margin-left: 20rpx;
+}
+
+.radio {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid #dee2e6;
+  border-radius: 50%;
+  position: relative;
+  background: white;
+}
+
+.radio.checked {
+  border-color: #667eea;
+}
+
+.radio.checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20rpx;
+  height: 20rpx;
+  background: #667eea;
+  border-radius: 50%;
+}
+
+/* 支付金额确认样式 */
+.payment-amount {
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount-label {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.amount-value {
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+/* 底部按钮样式 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 30rpx 40rpx;
+  border-top: 2rpx solid #f0f0f0;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -10rpx 30rpx rgba(0,0,0,0.1);
+}
+
+.footer button {
+  flex: 1;
+  padding: 28rpx;
+  border-radius: 16rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.btn-primary.disabled {
+  background: #adb5bd !important;
+  color: white !important;
+}
+
+/* 支付处理弹窗样式 */
+.payment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.payment-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: white;
+  padding: 60rpx 40rpx;
+  border-radius: 30rpx;
+  text-align: center;
+  max-width: 500rpx;
+  width: 80%;
+}
+
+.modal-icon {
+  margin-bottom: 30rpx;
+}
+
+.processing-icon {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.modal-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 16rpx;
+}
+
+.modal-desc {
+  display: block;
+  color: #666;
+  font-size: 28rpx;
+  line-height: 1.5;
+}

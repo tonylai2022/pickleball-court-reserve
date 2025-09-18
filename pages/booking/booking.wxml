@@ -1,0 +1,87 @@
+<!--booking.wxml-->
+<view class="container">
+  <!-- 头部信息 -->
+  <view class="header card">
+    <text class="page-title">选择时间段</text>
+    <view class="court-summary">
+      <text class="court-name">{{courtInfo.name}}</text>
+      <text class="court-price">¥{{courtInfo.price}}/小时</text>
+    </view>
+  </view>
+
+  <!-- 日期选择 -->
+  <view class="date-section card">
+    <view class="section-header">
+      <text class="section-title">选择日期</text>
+    </view>
+    <view class="date-options">
+      <view 
+        wx:for="{{dateOptions}}" 
+        wx:key="index"
+        class="date-btn {{selectedDate === item.value ? 'active' : ''}}"
+        bindtap="selectDate"
+        data-date="{{item.value}}"
+      >
+        <text class="date-text">{{item.label}}</text>
+        <text class="date-detail">{{item.date}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间段选择 -->
+  <view class="time-section card">
+    <view class="section-header">
+      <text class="section-title">可预订时间段</text>
+    </view>
+    <view class="time-slots">
+      <view 
+        wx:for="{{timeSlots}}" 
+        wx:key="index"
+        class="slot-btn {{item.available ? (selectedTimeSlot === item.time ? 'selected' : '') : 'unavailable'}}"
+        bindtap="selectTimeSlot"
+        data-time="{{item.time}}"
+        data-available="{{item.available}}"
+      >
+        <text class="slot-time">{{item.time}}</text>
+        <text class="slot-status" wx:if="{{!item.available}}">已预订</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 预订摘要 -->
+  <view class="summary-section card" wx:if="{{selectedTimeSlot}}">
+    <view class="section-header">
+      <text class="section-title">预订信息</text>
+    </view>
+    <view class="summary-content">
+      <view class="summary-item">
+        <text class="item-label">球场:</text>
+        <text class="item-value">{{courtInfo.name}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="item-label">日期:</text>
+        <text class="item-value">{{selectedDateLabel}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="item-label">时间:</text>
+        <text class="item-value">{{selectedTimeSlot}}</text>
+      </view>
+      <view class="summary-item total">
+        <text class="item-label">总计:</text>
+        <text class="item-value price">¥{{courtInfo.price}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="footer">
+    <button class="btn-secondary" bindtap="goBack">返回</button>
+    <button 
+      class="btn-primary {{!selectedTimeSlot ? 'disabled' : ''}}" 
+      bindtap="proceedToPayment"
+      disabled="{{!selectedTimeSlot}}"
+    >
+      确认预订
+    </button>
+  </view>
+</view>

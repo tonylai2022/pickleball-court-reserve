@@ -1,0 +1,205 @@
+<!--success.wxml-->
+<view class="container">
+  <!-- 成功图标和标题 -->
+  <view class="success-header">
+    <view class="success-icon">
+      <view class="check-mark">✓</view>
+    </view>
+    <text class="success-title">预订成功！</text>
+    <text class="success-subtitle">您的匹克球场已预订成功，期待您的到来！</text>
+    <view class="success-animation">
+      <view class="celebration">🎉</view>
+    </view>
+  </view>
+
+  <!-- 预订凭证卡片 -->
+  <view class="voucher-card card">
+    <view class="voucher-header">
+      <text class="voucher-title">预订凭证</text>
+      <view class="qr-code">
+        <view class="qr-placeholder">
+          <text class="qr-text">二维码</text>
+          <text class="qr-subtitle">到场出示</text>
+        </view>
+      </view>
+    </view>
+    <view class="voucher-content">
+      <view class="booking-number">
+        <text class="number-label">预订编号</text>
+        <text class="number-value">{{confirmationNumber}}</text>
+        <button class="copy-btn" bindtap="copyBookingId">复制</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 预订详情卡片 -->
+  <view class="booking-details card">
+    <view class="details-header">
+      <text class="details-title">预订详情</text>
+      <view class="status-badge success">
+        <text class="status-text">已确认</text>
+      </view>
+    </view>
+
+    <view class="details-content">
+      <view class="detail-row">
+        <view class="detail-item">
+          <text class="item-icon">🏟️</text>
+          <view class="item-info">
+            <text class="item-label">球场名称</text>
+            <text class="item-value">{{booking.court}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="detail-row">
+        <view class="detail-item">
+          <text class="item-icon">📅</text>
+          <view class="item-info">
+            <text class="item-label">预订日期</text>
+            <text class="item-value">{{booking.date}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="detail-row">
+        <view class="detail-item">
+          <text class="item-icon">⏰</text>
+          <view class="item-info">
+            <text class="item-label">预订时间</text>
+            <text class="item-value">{{booking.startTime}} - {{booking.endTime}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="detail-row">
+        <view class="detail-item">
+          <text class="item-icon">👤</text>
+          <view class="item-info">
+            <text class="item-label">预订人数</text>
+            <text class="item-value">{{booking.playerCount}}人</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="detail-row">
+        <view class="detail-item">
+          <text class="item-icon">💳</text>
+          <view class="item-info">
+            <text class="item-label">支付方式</text>
+            <text class="item-value">{{booking.paymentMethod}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="detail-row amount-row">
+        <view class="detail-item">
+          <text class="item-icon">💰</text>
+          <view class="item-info">
+            <text class="item-label">支付金额</text>
+            <text class="item-value price">¥{{booking.amount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 球场信息卡片 -->
+  <view class="court-info-section card">
+    <view class="section-header">
+      <text class="section-title">球场信息</text>
+    </view>
+    <view class="court-info-content">
+      <view class="info-item">
+        <text class="info-icon">📍</text>
+        <view class="info-text">
+          <text class="info-label">球场地址</text>
+          <text class="info-value">{{booking.courtAddress}}</text>
+        </view>
+        <button class="info-action" bindtap="openMap">导航</button>
+      </view>
+      
+      <view class="info-item">
+        <text class="info-icon">📞</text>
+        <view class="info-text">
+          <text class="info-label">联系电话</text>
+          <text class="info-value">{{booking.courtPhone}}</text>
+        </view>
+        <button class="info-action" bindtap="makePhoneCall">拨打</button>
+      </view>
+      
+      <view class="info-item">
+        <text class="info-icon">🕒</text>
+        <view class="info-text">
+          <text class="info-label">营业时间</text>
+          <text class="info-value">08:00 - 22:00</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 温馨提示 -->
+  <view class="tips-section card">
+    <view class="tips-header">
+      <text class="tips-title">温馨提示</text>
+    </view>
+    <view class="tips-content">
+      <view class="tip-item important">
+        <text class="tip-icon">⚠️</text>
+        <text class="tip-text">请提前15分钟到达球场，凭预订编号或二维码入场</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">📱</text>
+        <text class="tip-text">建议截屏保存此页面，方便到场时出示</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">🏸</text>
+        <text class="tip-text">球场免费提供专业球拍和匹克球</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">�️</text>
+        <text class="tip-text">球场提供免费停车位，先到先得</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">�</text>
+        <text class="tip-text">如需取消或更改，请至少提前2小时联系客服</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <view class="button-row">
+      <button class="btn-secondary half-width" bindtap="saveToAlbum">
+        <text class="btn-icon">📸</text>
+        <text>保存凭证</text>
+      </button>
+      <button class="btn-secondary half-width" bindtap="shareBooking">
+        <text class="btn-icon">📤</text>
+        <text>分享预订</text>
+      </button>
+    </view>
+    
+    <view class="button-row">
+      <button class="btn-secondary half-width" bindtap="addToCalendar">
+        <text class="btn-icon">📅</text>
+        <text>添加日历</text>
+      </button>
+      <button class="btn-secondary half-width" bindtap="contactService">
+        <text class="btn-icon">📞</text>
+        <text>联系客服</text>
+      </button>
+    </view>
+    
+    <button class="btn-primary full-width" bindtap="goHome">
+      <text class="btn-icon">🏠</text>
+      <text>返回首页</text>
+    </button>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer-info">
+    <text class="footer-text">感谢选择Urban Dinker Court</text>
+    <text class="footer-subtext">预订时间: {{paymentTime}}</text>
+  </view>
+</view>

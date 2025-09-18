@@ -1,0 +1,82 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 头部标题 -->
+  <view class="header">
+    <text class="title">匹克球场预订系统</text>
+    <text class="subtitle">Pickleball Court Reservation</text>
+  </view>
+
+  <!-- 球场卡片 -->
+  <view class="court-card card" bindtap="openBooking">
+    <!-- 球场图片 -->
+    <view class="court-image">
+      <image 
+        src="/images/court.jpeg" 
+        mode="aspectFill"
+        class="court-img"
+      />
+      <view class="court-status">可预订</view>
+    </view>
+
+    <!-- 球场信息 -->
+    <view class="court-info">
+      <text class="court-name">Urban Dinker Court</text>
+      <text class="court-description">专业级匹克球场，配备优质地面和专业照明设备。位置便利，停车方便。</text>
+      
+      <!-- 价格信息 -->
+      <view class="price-info">
+        <text class="price">¥120</text>
+        <text class="duration">/ 小时</text>
+      </view>
+
+      <!-- 球场特色 -->
+      <view class="court-features">
+        <view class="feature">
+          <text class="feature-icon">🏸</text>
+          <text class="feature-text">专业球拍</text>
+        </view>
+        <view class="feature">
+          <text class="feature-icon">💡</text>
+          <text class="feature-text">LED照明</text>
+        </view>
+        <view class="feature">
+          <text class="feature-icon">🅿️</text>
+          <text class="feature-text">免费停车</text>
+        </view>
+      </view>
+
+      <!-- 预订按钮 -->
+      <button class="book-btn btn-primary" bindtap="openBooking">
+        立即预订
+      </button>
+    </view>
+  </view>
+
+  <!-- 其他信息 -->
+  <view class="info-section card">
+    <view class="info-header">
+      <text class="info-title">球场信息</text>
+    </view>
+    <view class="info-content">
+      <view class="info-item">
+        <text class="info-label">营业时间:</text>
+        <text class="info-value">08:00 - 22:00</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">联系电话:</text>
+        <text class="info-value">400-888-8888</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">球场地址:</text>
+        <text class="info-value">TRK·达鲁酷运动餐酒吧(友邦金融中心店)\n公平路209号友邦金融中心地下二层LG2层201号</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部链接 -->
+  <view class="footer-links">
+    <button class="footer-link" bindtap="showAbout">关于我们</button>
+    <button class="footer-link" bindtap="showTerms">服务条款</button>
+    <button class="footer-link" bindtap="showPrivacy">隐私政策</button>
+  </view>
+</view>

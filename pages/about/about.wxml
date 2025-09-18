@@ -1,0 +1,66 @@
+<!--about.wxml-->
+<view class="container">
+  <view class="header">
+    <image src="/images/court.jpeg" class="logo" mode="aspectFit" />
+    <text class="app-name">TRK 匹克球场预订</text>
+    <text class="version">版本 {{version}}</text>
+  </view>
+
+  <view class="info-card">
+    <view class="venue-info">
+      <text class="venue-name">TRK·达鲁酷运动餐酒吧</text>
+      <text class="venue-address">友邦金融中心店</text>
+      <text class="venue-desc">专业匹克球场，设施完善，环境优雅</text>
+    </view>
+  </view>
+
+  <view class="features">
+    <text class="section-title">小程序功能</text>
+    <view class="feature-list">
+      <view class="feature-item">
+        <view class="feature-icon">🏓</view>
+        <text class="feature-text">在线预订球场</text>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">💰</view>
+        <text class="feature-text">微信支付结算</text>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">📱</view>
+        <text class="feature-text">实时确认通知</text>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">🎯</view>
+        <text class="feature-text">智能时间管理</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="contact-info">
+    <text class="section-title">联系我们</text>
+    <view class="contact-list">
+      <view class="contact-item">
+        <text class="contact-label">球场地址</text>
+        <text class="contact-value">友邦金融中心店</text>
+      </view>
+      <view class="contact-item">
+        <text class="contact-label">营业时间</text>
+        <text class="contact-value">每日 9:00-22:00</text>
+      </view>
+      <view class="contact-item">
+        <text class="contact-label">联系电话</text>
+        <text class="contact-value">{{contactPhone}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="legal-links">
+    <button class="link-button" bindtap="showPrivacy">隐私政策</button>
+    <button class="link-button" bindtap="showTerms">服务条款</button>
+  </view>
+
+  <view class="footer">
+    <text class="copyright">© 2025 TRK·达鲁酷运动餐酒吧</text>
+    <text class="powered">技术支持：匹克球预订系统</text>
+  </view>
+</view>

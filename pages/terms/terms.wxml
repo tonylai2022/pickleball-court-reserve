@@ -1,0 +1,96 @@
+<!--terms.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="page-title">服务条款</text>
+    <text class="last-updated">最后更新：{{updateDate}}</text>
+  </view>
+
+  <scroll-view class="content" scroll-y="true">
+    <view class="section">
+      <text class="section-title">1. 服务说明</text>
+      <text class="section-content">
+        TRK匹克球场预订小程序为用户提供在线球场预订服务。通过本小程序，用户可以：
+        • 查看球场实时可用性
+        • 在线预订球场时段
+        • 使用微信支付完成付款
+        • 获取预订确认和提醒
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">2. 用户责任</text>
+      <text class="section-content">
+        使用本服务时，您需要：
+        • 提供真实、准确的个人信息
+        • 按时到场使用已预订的球场
+        • 遵守球场规则和安全要求
+        • 爱护球场设施和环境
+        • 如需取消预订，请提前通知
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">3. 预订规则</text>
+      <text class="section-content">
+        • 预订需要提前支付费用
+        • 预订确认后将收到确认信息
+        • 如需取消，请在开始时间前2小时联系球场
+        • 迟到超过15分钟可能导致预订取消
+        • 特殊天气情况下，球场方有权调整安排
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">4. 退款政策</text>
+      <text class="section-content">
+        • 提前24小时取消预订：全额退款
+        • 提前2-24小时取消：扣除10%手续费
+        • 不足2小时取消：不予退款
+        • 因天气等不可抗力因素取消：全额退款
+        • 退款将在3-5个工作日内返回原支付方式
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">5. 免责声明</text>
+      <text class="section-content">
+        • 运动存在风险，请量力而行
+        • 球场方不承担运动过程中的人身伤害责任
+        • 用户应自行购买相关保险
+        • 个人物品请妥善保管，遗失概不负责
+        • 请遵守球场安全规定和指引
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">6. 服务变更</text>
+      <text class="section-content">
+        我们保留在必要时修改本服务条款的权利。重大变更将通过小程序通知用户。继续使用服务即表示接受新的条款。
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">7. 争议解决</text>
+      <text class="section-content">
+        如发生争议，请首先联系客服协商解决。如协商不成，可通过以下方式解决：
+        • 消费者投诉热线
+        • 相关体育部门调解
+        • 司法途径解决
+      </text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">8. 联系方式</text>
+      <text class="section-content">
+        TRK·达鲁酷运动餐酒吧
+        地址：友邦金融中心店
+        营业时间：每日 9:00-22:00
+        客服电话：{{contactPhone}}
+      </text>
+    </view>
+  </scroll-view>
+
+  <view class="footer">
+    <button class="btn-primary" bindtap="goBack">我已了解</button>
+  </view>
+</view>
