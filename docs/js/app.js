@@ -25,6 +25,14 @@ const state = {
   }
 };
 
+// Demo events catalog (original sample data)
+const demoEvents = [
+  { id:'evt-1', title:'周三晚新手社交场', level:'beginner', weekday:true, dateOffset:1, start:'19:00', end:'21:00', price:49 },
+  { id:'evt-2', title:'周五夜进阶训练营', level:'intermediate', weekday:true, dateOffset:3, start:'20:00', end:'22:00', price:69 },
+  { id:'evt-3', title:'周末高手对抗赛', level:'advanced', weekday:false, dateOffset:5, start:'14:00', end:'17:00', price:99 },
+  { id:'evt-4', title:'周末欢乐拼场', level:'beginner', weekday:false, dateOffset:6, start:'10:00', end:'12:00', price:59 },
+];
+
 // Utils
 const $ = sel => document.querySelector(sel);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
@@ -72,6 +80,7 @@ function showPage(pageId){
   if(state.currentPage !== pageId){ state.history.push(state.currentPage); }
   state.currentPage = pageId;
   show(target);
+  if(pageId==='events'){ renderEvents(); }
 }
 function goBack(){
   if(state.history.length === 0){ return showPage('home'); }
@@ -288,6 +297,80 @@ function shareBooking(){
   }
 }
 
+// Events list
+function dateFromOffset(offset){
+  const d = new Date();
+  d.setDate(d.getDate()+offset);
+  const iso = d.toISOString().slice(0,10);
+  const label = d.toLocaleDateString('zh-CN', { month:'2-digit', day:'2-digit', weekday:'short' });
+  return { iso, label };
+}
+function renderEvents(){
+  const list = document.getElementById('eventsList');
+  if(!list) return;
+  const level = (document.getElementById('filterLevel')?.value)||'';
+  const day = (document.getElementById('filterDay')?.value)||'';
+  const items = demoEvents.filter(e => {
+    if(level && e.level!==level) return false;
+    if(day==='weekday' && !e.weekday) return false;
+    if(day==='weekend' && e.weekday) return false;
+    return true;
+  }).map(e => {
+    const d = dateFromOffset(e.dateOffset);
+    return `<div class="event-card">
+      <div class="event-info">
+        <div class="event-title">${e.title}</div>
+        <div class="event-meta">
+          <span>日期：${d.label}</span>
+          <span>时间：${e.start}-${e.end}</span>
+          <span>水平：${e.level==='beginner'?'新手':e.level==='intermediate'?'进阶':'高手'}</span>
+        </div>
+      </div>
+      <div class="event-cta">
+        <div class="price">¥${e.price}</div>
+        <button class="btn-primary" onclick="bookEvent('${e.id}')">报名</button>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = items.join('') || '<div class="muted">暂无符合条件的活动</div>';
+}
+function bookEvent(id){
+  const ev = demoEvents.find(x=>x.id===id);
+  if(!ev) return;
+  // Map into booking selections: set date and time range
+  const d = dateFromOffset(ev.dateOffset);
+  state.booking.date = d.iso;
+  // derive start hour from start string
+  const h = parseInt(ev.start.split(':')[0],10);
+  state.booking.selectedSlots = [ { start: ev.start, end: `${String(h+1).padStart(2,'0')}:00` } ];
+  // extend slots to cover full range
+  for(let hour = h+1; hour < parseInt(ev.end.split(':')[0],10); hour++){
+    state.booking.selectedSlots.push({ start: `${String(hour).padStart(2,'0')}:00`, end: `${String(hour+1).padStart(2,'0')}:00`});
+  }
+  normalizeSlots();
+  calcFees();
+  showPage('booking');
+  renderDates();
+  renderTimeSlots();
+  updateSummary();
+  $('#confirmBooking').disabled = false;
+}
+
+// FAQ
+function toggleFaq(btn){
+  const item = btn.closest('.faq-item');
+  if(!item) return;
+  item.classList.toggle('open');
+}
+
+// Membership demo: flip the member flag
+function enableDemoMembership(){
+  state.booking.isMember = true;
+  calcFees();
+  updateSummary();
+  showToast('已启用会员折扣（演示）');
+}
+
 function addToCalendar(){
   // Create simple .ics content
   const start = `${state.booking.date}T${state.booking.startTime.replace(':','')}00`;
@@ -428,6 +511,10 @@ window.changePlayers = changePlayers;
 window.applyPromo = applyPromo;
 window.toggleMember = toggleMember;
 window.togglePayEnabled = togglePayEnabled;
+window.renderEvents = renderEvents;
+window.bookEvent = bookEvent;
+window.toggleFaq = toggleFaq;
+window.enableDemoMembership = enableDemoMembership;
 
 // Init
 window.addEventListener('DOMContentLoaded', () => {

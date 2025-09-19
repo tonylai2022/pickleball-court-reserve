@@ -33,6 +33,11 @@
 			</header>
 
 			<main class="main-content">
+				<div class="home-actions">
+					<button class="btn-secondary" onclick="showPage('events')">探索活动</button>
+					<button class="btn-secondary" onclick="showPage('membership')">会员与价格</button>
+					<button class="btn-secondary" onclick="showPage('faq')">常见问题</button>
+				</div>
 				<div class="court-card card" onclick="openBooking()">
 					<div class="court-image">
 						<img src="images/court.jpeg" alt="TRK匹克球场" class="court-img">
@@ -256,6 +261,91 @@
 				<button class="btn-secondary" onclick="goBack()">返回修改</button>
 				<button class="btn-primary" id="payNow" onclick="processPayment()">立即支付</button>
 			</footer>
+		</div>
+
+		<!-- Events / Social Sessions -->
+		<div id="events-page" class="page">
+			<header class="page-header">
+				<button class="back-btn" onclick="goBack()">←</button>
+				<h1 class="page-title">活动与社交场</h1>
+				<div class="header-placeholder"></div>
+			</header>
+			<div class="events-content">
+				<div class="card">
+					<div class="filters-row">
+						<select id="filterLevel" class="select" onchange="renderEvents()">
+							<option value="">全部水平</option>
+							<option value="beginner">新手</option>
+							<option value="intermediate">进阶</option>
+							<option value="advanced">高手</option>
+						</select>
+
+						<select id="filterDay" class="select" onchange="renderEvents()">
+							<option value="">全部日期</option>
+							<option value="weekday">工作日</option>
+							<option value="weekend">周末</option>
+						</select>
+					</div>
+					<div id="eventsList" class="events-list"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Membership / Pricing -->
+		<div id="membership-page" class="page">
+			<header class="page-header">
+				<button class="back-btn" onclick="goBack()">←</button>
+				<h1 class="page-title">会员与价格</h1>
+				<div class="header-placeholder"></div>
+			</header>
+			<div class="membership-content">
+				<div class="plans">
+					<div class="plan card">
+						<h3 class="plan-name">基础会员</h3>
+						<p class="plan-price">¥0/月</p>
+						<ul class="plan-features">
+							<li>在线预订</li>
+							<li>活动报名</li>
+						</ul>
+						<button class="btn-secondary" onclick="showToast('已选择基础会员')">选择</button>
+					</div>
+					<div class="plan card popular">
+						<div class="badge">推荐</div>
+						<h3 class="plan-name">PRO 会员</h3>
+						<p class="plan-price">¥39/月</p>
+						<ul class="plan-features">
+							<li>会员专享9折</li>
+							<li>优先报名前排</li>
+							<li>活动提醒与优先候补</li>
+						</ul>
+						<button class="btn-primary" onclick="enableDemoMembership()">开通（演示）</button>
+					</div>
+				</div>
+				<div class="note">演示环境不会真实扣款，点击“开通（演示）”将直接启用会员折扣。</div>
+			</div>
+		</div>
+
+		<!-- FAQ -->
+		<div id="faq-page" class="page">
+			<header class="page-header">
+				<button class="back-btn" onclick="goBack()">←</button>
+				<h1 class="page-title">常见问题</h1>
+				<div class="header-placeholder"></div>
+			</header>
+			<div class="faq-content">
+				<div class="faq-item card">
+					<button class="faq-q" onclick="toggleFaq(this)">如何预订球场？</button>
+					<div class="faq-a">在首页或活动页选择时间段与日期，确认费用后前往支付即可完成预订。</div>
+				</div>
+				<div class="faq-item card">
+					<button class="faq-q" onclick="toggleFaq(this)">可以多人拼场吗？</button>
+					<div class="faq-a">可以，在“参与人数”中设置人数后可查看人均费用，邀请好友一起参加。</div>
+				</div>
+				<div class="faq-item card">
+					<button class="faq-q" onclick="toggleFaq(this)">是否支持退款？</button>
+					<div class="faq-a">请至少在开始前24小时申请取消，将视具体情况予以处理（演示站仅为模拟）。</div>
+				</div>
+			</div>
 		</div>
 
 		<div id="success-page" class="page">
