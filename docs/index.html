@@ -271,6 +271,7 @@
 				<div class="header-placeholder"></div>
 			</header>
 			<div class="events-content">
+				<div id="dayStrip" class="day-strip"></div>
 				<div class="card">
 					<div class="filters-row">
 						<select id="filterLevel" class="select" onchange="renderEvents()">
@@ -419,6 +420,14 @@
 	</div>
 
 	<div id="toast" class="toast"><span id="toast-message">消息</span></div>
+
+	<!-- Bottom Tab Bar -->
+	<nav id="tabbar" class="tabbar">
+		<button class="tab-btn" onclick="showPage('home')">首页</button>
+		<button class="tab-btn" onclick="showPage('events')">活动</button>
+		<button class="tab-btn" onclick="showPage('membership')">会员</button>
+		<button class="tab-btn" onclick="showPage('faq')">FAQ</button>
+	</nav>
 
 	<script src="js/app.js"></script>
 	</body>

@@ -27,10 +27,10 @@ const state = {
 
 // Demo events catalog (original sample data)
 const demoEvents = [
-  { id:'evt-1', title:'周三晚新手社交场', level:'beginner', weekday:true, dateOffset:1, start:'19:00', end:'21:00', price:49 },
-  { id:'evt-2', title:'周五夜进阶训练营', level:'intermediate', weekday:true, dateOffset:3, start:'20:00', end:'22:00', price:69 },
-  { id:'evt-3', title:'周末高手对抗赛', level:'advanced', weekday:false, dateOffset:5, start:'14:00', end:'17:00', price:99 },
-  { id:'evt-4', title:'周末欢乐拼场', level:'beginner', weekday:false, dateOffset:6, start:'10:00', end:'12:00', price:59 },
+  { id:'evt-1', title:'周三晚新手社交场', level:'beginner', weekday:true, dateOffset:1, start:'19:00', end:'21:00', price:49, capacity:12, booked:6 },
+  { id:'evt-2', title:'周五夜进阶训练营', level:'intermediate', weekday:true, dateOffset:3, start:'20:00', end:'22:00', price:69, capacity:16, booked:15 },
+  { id:'evt-3', title:'周末高手对抗赛', level:'advanced', weekday:false, dateOffset:5, start:'14:00', end:'17:00', price:99, capacity:12, booked:12 },
+  { id:'evt-4', title:'周末欢乐拼场', level:'beginner', weekday:false, dateOffset:6, start:'10:00', end:'12:00', price:59, capacity:20, booked:4 },
 ];
 
 // Utils
@@ -81,6 +81,12 @@ function showPage(pageId){
   state.currentPage = pageId;
   show(target);
   if(pageId==='events'){ renderEvents(); }
+  // update tabbar active state
+  $$('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  if(pageId==='home'){ document.querySelector('.tab-btn:nth-child(1)')?.classList.add('active'); }
+  if(pageId==='events'){ document.querySelector('.tab-btn:nth-child(2)')?.classList.add('active'); }
+  if(pageId==='membership'){ document.querySelector('.tab-btn:nth-child(3)')?.classList.add('active'); }
+  if(pageId==='faq'){ document.querySelector('.tab-btn:nth-child(4)')?.classList.add('active'); }
 }
 function goBack(){
   if(state.history.length === 0){ return showPage('home'); }
@@ -308,15 +314,20 @@ function dateFromOffset(offset){
 function renderEvents(){
   const list = document.getElementById('eventsList');
   if(!list) return;
+  renderDayStrip();
   const level = (document.getElementById('filterLevel')?.value)||'';
   const day = (document.getElementById('filterDay')?.value)||'';
+  const activeOffset = Number(document.querySelector('.day-chip.active')?.dataset.offset || 0);
   const items = demoEvents.filter(e => {
     if(level && e.level!==level) return false;
     if(day==='weekday' && !e.weekday) return false;
     if(day==='weekend' && e.weekday) return false;
+    if(!isNaN(activeOffset) && activeOffset>0 && e.dateOffset!==activeOffset) return false;
     return true;
   }).map(e => {
     const d = dateFromOffset(e.dateOffset);
+    const left = Math.max(0, e.capacity - e.booked);
+    const full = left===0;
     return `<div class="event-card">
       <div class="event-info">
         <div class="event-title">${e.title}</div>
@@ -324,15 +335,41 @@ function renderEvents(){
           <span>日期：${d.label}</span>
           <span>时间：${e.start}-${e.end}</span>
           <span>水平：${e.level==='beginner'?'新手':e.level==='intermediate'?'进阶':'高手'}</span>
+          <span class="spots">${full?'已满':`余位：${left}`}</span>
         </div>
       </div>
       <div class="event-cta">
         <div class="price">¥${e.price}</div>
-        <button class="btn-primary" onclick="bookEvent('${e.id}')">报名</button>
+        ${full
+          ? `<button class="btn-secondary" onclick="waitlistEvent('${e.id}')">候补</button>`
+          : `<button class="btn-primary" onclick="bookEvent('${e.id}')">报名</button>`}
       </div>
     </div>`;
   });
   list.innerHTML = items.join('') || '<div class="muted">暂无符合条件的活动</div>';
+}
+function renderDayStrip(){
+  const strip = document.getElementById('dayStrip');
+  if(!strip) return;
+  if(strip.dataset.bind==='1') return; // simple once-binding
+  const today = new Date();
+  const chips = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(today); d.setDate(today.getDate()+i);
+    const label = d.toLocaleDateString('zh-CN', { month:'2-digit', day:'2-digit', weekday:'short' });
+    const active = i===0 ? ' active' : '';
+    chips.push(`<div class="day-chip${active}" data-offset="${i}" onclick="selectDay(${i}, this)">${label}</div>`);
+  }
+  strip.innerHTML = chips.join('');
+  strip.dataset.bind = '1';
+}
+function selectDay(offset, el){
+  $$('.day-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderEvents();
+}
+function waitlistEvent(id){
+  showToast('已加入候补（演示）');
 }
 function bookEvent(id){
   const ev = demoEvents.find(x=>x.id===id);
@@ -515,6 +552,8 @@ window.renderEvents = renderEvents;
 window.bookEvent = bookEvent;
 window.toggleFaq = toggleFaq;
 window.enableDemoMembership = enableDemoMembership;
+window.selectDay = selectDay;
+window.waitlistEvent = waitlistEvent;
 
 // Init
 window.addEventListener('DOMContentLoaded', () => {
