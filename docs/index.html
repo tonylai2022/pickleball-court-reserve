@@ -12,9 +12,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-title" content="TRK球场预订">
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
+	<!-- Removed non-standard cache-control meta tags for HTML5 validity -->
 	<style>/* tiny fix to ensure full-height */ html,body{height:100%;} </style>
 	</head>
 <body>
@@ -120,7 +118,7 @@
 				<div class="header-placeholder"></div>
 			</header>
 
-			<main class="booking-content">
+			<div class="booking-content">
 				<div class="date-section card">
 					<h3 class="section-title">选择日期</h3>
 					<div class="date-picker">
@@ -129,32 +127,82 @@
 				</div>
 
 				<div class="time-section card">
-					<h3 class="section-title">选择时间段</h3>
+					<div class="section-title-row">
+						<h3 class="section-title">选择时间段</h3>
+						<span class="section-hint">可多选连续时段</span>
+					</div>
 					<div class="time-grid" id="timeGrid"></div>
+				</div>
+
+				<div class="addons-section card">
+					<h3 class="section-title">增值服务</h3>
+					<div class="addons-grid">
+						<div class="addon-item">
+							<div class="addon-info">
+								<div class="addon-title">球拍租赁</div>
+								<div class="addon-desc">¥20/支</div>
+							</div>
+							<div class="qty-stepper">
+								<button class="stepper-btn" onclick="changeAddonQty('paddles', -1)">-</button>
+								<span class="stepper-value" id="qty-paddles">0</span>
+								<button class="stepper-btn" onclick="changeAddonQty('paddles', 1)">+</button>
+							</div>
+						</div>
+						<div class="addon-item">
+							<div class="addon-info">
+								<div class="addon-title">球（套装）</div>
+								<div class="addon-desc">¥10/套</div>
+							</div>
+							<div class="qty-stepper">
+								<button class="stepper-btn" onclick="changeAddonQty('balls', -1)">-</button>
+								<span class="stepper-value" id="qty-balls">0</span>
+								<button class="stepper-btn" onclick="changeAddonQty('balls', 1)">+</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="players-section card">
+					<h3 class="section-title">参与人数</h3>
+					<div class="players-row">
+						<div class="qty-stepper">
+							<button class="stepper-btn" onclick="changePlayers(-1)">-</button>
+							<span class="stepper-value" id="playersCount">2</span>
+							<button class="stepper-btn" onclick="changePlayers(1)">+</button>
+						</div>
+						<div class="per-person" id="perPerson">人均 ¥0</div>
+					</div>
+				</div>
+
+				<div class="promo-section card">
+					<h3 class="section-title">优惠/会员</h3>
+					<div class="promo-row">
+						<input id="promoInput" class="promo-input" placeholder="输入优惠码（如 PICKLE10）">
+						<button class="btn-secondary" onclick="applyPromo()">应用</button>
+					</div>
+					<label class="toggle">
+						<input type="checkbox" id="memberToggle" onchange="toggleMember(this.checked)">
+						<span>会员折扣（9折）</span>
+					</label>
 				</div>
 
 				<div class="booking-summary card">
 					<h3 class="section-title">预订摘要</h3>
 					<div class="summary-content">
-						<div class="summary-item">
-							<span class="summary-label">球场</span>
-							<span class="summary-value">Urban Dinker Court</span>
-						</div>
-						<div class="summary-item">
-							<span class="summary-label">日期</span>
-							<span class="summary-value" id="selectedDate">请选择日期</span>
-						</div>
-						<div class="summary-item">
-							<span class="summary-label">时间</span>
-							<span class="summary-value" id="selectedTime">请选择时间</span>
+						<div class="summary-item"><span class="summary-label">球场</span><span class="summary-value">Urban Dinker Court</span></div>
+						<div class="summary-item"><span class="summary-label">日期</span><span class="summary-value" id="selectedDate">请选择日期</span></div>
+						<div class="summary-item"><span class="summary-label">时间</span><span class="summary-value" id="selectedTime">请选择时间</span></div>
+						<div class="divider"></div>
+						<div class="fees" id="feeBreakdown">
+							<!-- dynamic fee rows inserted here -->
 						</div>
 						<div class="summary-item total">
-							<span class="summary-label">总价</span>
+							<span class="summary-label">合计</span>
 							<span class="summary-value price" id="totalPrice">¥0</span>
 						</div>
 					</div>
 				</div>
-			</main>
+			</div>
 
 			<footer class="booking-footer">
 				<button class="btn-primary" id="confirmBooking" onclick="goToPayment()" disabled>
@@ -170,10 +218,11 @@
 				<div class="header-placeholder"></div>
 			</header>
 
-			<main class="payment-content">
+			<div class="payment-content">
 				<div class="order-summary card">
 					<h3 class="section-title">订单摘要</h3>
 					<div class="order-details" id="orderDetails"></div>
+					<div class="fees" id="feeBreakdownPay"></div>
 				</div>
 
 				<div class="payment-section card">
@@ -194,11 +243,14 @@
 
 				<div class="payment-amount card">
 					<div class="amount-row">
-						<span class="amount-label">实付金额</span>
+						<div class="terms">
+							<label><input type="checkbox" id="agreeTerms" onchange="togglePayEnabled()"> 我已阅读并同意</label>
+							<button class="link" onclick="showPage('terms')">服务条款</button> 和 <button class="link" onclick="showPage('privacy')">隐私政策</button>
+						</div>
 						<span class="amount-value" id="paymentAmount">¥0</span>
 					</div>
 				</div>
-			</main>
+			</div>
 
 			<footer class="payment-footer">
 				<button class="btn-secondary" onclick="goBack()">返回修改</button>
@@ -207,7 +259,7 @@
 		</div>
 
 		<div id="success-page" class="page">
-			<main class="success-content">
+			<div class="success-content">
 				<div class="success-header">
 					<div class="success-icon"><div class="check-mark">✓</div></div>
 					<h1 class="success-title">预订成功！</h1>
@@ -235,6 +287,7 @@
 						<div class="status-badge success"><span class="status-text">已确认</span></div>
 					</div>
 					<div class="details-content" id="bookingDetails"></div>
+					<div class="per-person-large" id="perPersonSuccess">人均 ¥0</div>
 				</div>
 
 				<div class="action-buttons">
@@ -242,28 +295,28 @@
 					<button class="action-btn" onclick="addToCalendar()"><span class="btn-icon">📅</span><span class="btn-text">加入日历</span></button>
 					<button class="action-btn" onclick="contactSupport()"><span class="btn-icon">📞</span><span class="btn-text">联系客服</span></button>
 				</div>
-			</main>
+			</div>
 			<footer class="success-footer"><button class="btn-primary" onclick="goHome()">返回首页</button></footer>
 		</div>
 
 		<div id="about-page" class="page">
 			<header class="page-header"><button class="back-btn" onclick="goBack()">←</button><h1 class="page-title">关于我们</h1><div class="header-placeholder"></div></header>
-			<main class="about-content">
+			<div class="about-content">
 				<div class="about-card card">
 					<div class="app-info"><img src="images/court.svg" alt="TRK Logo" class="app-logo"><h2 class="app-name">TRK 匹克球场预订</h2><p class="version">版本 1.0.0</p></div>
 					<div class="venue-info"><h3>TRK·达鲁酷运动餐酒吧</h3><p class="venue-address">友邦金融中心店</p><p class="venue-desc">专业匹克球场，设施完善，环境优雅</p></div>
 				</div>
-			</main>
+			</div>
 		</div>
 
 		<div id="terms-page" class="page">
 			<header class="page-header"><button class="back-btn" onclick="goBack()">←</button><h1 class="page-title">服务条款</h1><div class="header-placeholder"></div></header>
-			<main class="terms-content"><div class="terms-card card"><p class="last-updated">最后更新：2025年9月18日</p><div class="terms-text"><h3>1. 服务说明</h3><p>TRK匹克球场预订系统为用户提供在线球场预订服务...</p></div></div></main>
+			<div class="terms-content"><div class="terms-card card"><p class="last-updated">最后更新：2025年9月18日</p><div class="terms-text"><h3>1. 服务说明</h3><p>TRK匹克球场预订系统为用户提供在线球场预订服务...</p></div></div></div>
 		</div>
 
 		<div id="privacy-page" class="page">
 			<header class="page-header"><button class="back-btn" onclick="goBack()">←</button><h1 class="page-title">隐私政策</h1><div class="header-placeholder"></div></header>
-			<main class="privacy-content"><div class="privacy-card card"><p class="last-updated">最后更新：2025年9月18日</p><div class="privacy-text"><h3>1. 信息收集</h3><p>本系统仅收集您进行球场预订所必需的信息...</p></div></div></main>
+			<div class="privacy-content"><div class="privacy-card card"><p class="last-updated">最后更新：2025年9月18日</p><div class="privacy-text"><h3>1. 信息收集</h3><p>本系统仅收集您进行球场预订所必需的信息...</p></div></div></div>
 		</div>
 	</div>
 

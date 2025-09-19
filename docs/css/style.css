@@ -96,6 +96,39 @@ body {
 .time-slot.active{ border-color: var(--primary); background:#ecfdf5; }
 .time-slot.unavailable{ opacity:.45; pointer-events:none; text-decoration:line-through; }
 
+.section-title-row{ display:flex; align-items:center; justify-content:space-between; }
+.section-hint{ color: var(--muted); font-size:12px; }
+
+.addons-section{ padding:12px; }
+.addons-grid{ display:grid; gap:10px; }
+.addon-item{ display:flex; align-items:center; justify-content:space-between; border:1px dashed var(--border); padding:10px; border-radius:12px; }
+.addon-info{ display:grid; }
+.addon-title{ font-weight:700; }
+.addon-desc{ color: var(--muted); font-size:12px; }
+.qty-stepper{ display:flex; align-items:center; gap:10px; }
+.stepper-btn{ width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:#fff; cursor:pointer; }
+.stepper-value{ min-width:24px; text-align:center; font-weight:700; }
+
+.players-section{ padding:12px; }
+.players-row{ display:flex; align-items:center; justify-content:space-between; }
+.per-person{ color:#0f766e; font-weight:800; }
+.per-person-large{ margin-top:8px; text-align:right; color:#0f766e; font-weight:900; font-size:18px; }
+
+.promo-section{ padding:12px; display:grid; gap:10px; }
+.promo-row{ display:flex; gap:8px; }
+.promo-input{ flex:1; border:1px solid var(--border); border-radius:10px; padding:10px; }
+.toggle{ display:flex; align-items:center; gap:8px; }
+
+.divider{ height:1px; background: var(--border); margin:6px 0; }
+.fees{ display:grid; gap:6px; }
+.fee-row{ display:flex; align-items:center; justify-content:space-between; font-size:14px; }
+.fee-row .muted{ color: var(--muted); }
+.fee-row.total{ font-size:16px; font-weight:900; }
+.badge{ background:#ecfeff; color:#0e7490; padding:2px 8px; border-radius:9999px; font-size:12px; }
+
+.terms{ display:flex; align-items:center; gap:8px; }
+.link{ background:transparent; border:0; color:#0f766e; cursor:pointer; text-decoration:underline; }
+
 .summary-content{ display:grid; gap:8px; }
 .summary-item{ display:flex; align-items:center; justify-content:space-between; }
 .summary-item.total .price{ color:#16a34a; }
