@@ -311,6 +311,52 @@ function dateFromOffset(offset){
   const label = d.toLocaleDateString('zh-CN', { month:'2-digit', day:'2-digit', weekday:'short' });
   return { iso, label };
 }
+
+// Schedule grid interactions
+function bookOpenPlay(days, start, end) {
+  const today = new Date();
+  let targetDate = new Date(today);
+  
+  // Find next occurrence of the days
+  if(days === 'mon-tue') {
+    while(targetDate.getDay() !== 1 && targetDate.getDay() !== 2) {
+      targetDate.setDate(targetDate.getDate() + 1);
+    }
+  } else if(days === 'wed-fri') {
+    while(targetDate.getDay() < 3 || targetDate.getDay() > 5) {
+      targetDate.setDate(targetDate.getDate() + 1);
+    }
+  }
+  
+  state.booking.date = targetDate.toISOString().slice(0,10);
+  const startHour = parseInt(start.split(':')[0]);
+  const endHour = parseInt(end.split(':')[0]);
+  
+  state.booking.selectedSlots = [];
+  for(let h = startHour; h < endHour; h++) {
+    const slotStart = `${String(h).padStart(2,'0')}:00`;
+    const slotEnd = `${String(h+1).padStart(2,'0')}:00`;
+    state.booking.selectedSlots.push({ start: slotStart, end: slotEnd });
+  }
+  
+  normalizeSlots();
+  calcFees();
+  showPage('booking');
+  renderDates();
+  renderTimeSlots();
+  updateSummary();
+  $('#confirmBooking').disabled = false;
+}
+
+function waitlistOpenPlay(days) {
+  showToast('已加入OPEN PLAY候补名单（演示）');
+}
+
+function bookDupr(day, level) {
+  showToast(`已报名${day} DUPR积分赛 ${level}（演示）`);
+}
+
+// Legacy event functions
 function renderEvents(){
   const list = document.getElementById('eventsList');
   if(!list) return;
@@ -554,6 +600,9 @@ window.toggleFaq = toggleFaq;
 window.enableDemoMembership = enableDemoMembership;
 window.selectDay = selectDay;
 window.waitlistEvent = waitlistEvent;
+window.bookOpenPlay = bookOpenPlay;
+window.waitlistOpenPlay = waitlistOpenPlay;
+window.bookDupr = bookDupr;
 
 // Init
 window.addEventListener('DOMContentLoaded', () => {

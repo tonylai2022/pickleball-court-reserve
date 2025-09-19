@@ -25,88 +25,102 @@
 
 	<div id="app" class="app-container">
 		<div id="home-page" class="page active">
-			<header class="header">
-				<div class="header-gradient">
-					<h1 class="title">TRK 匹克球场预订</h1>
-					<p class="subtitle">Pickleball Court Reservation</p>
+			<header class="hero">
+				<div class="hero-content">
+					<h1 class="hero-title">TRK 匹克球俱乐部</h1>
+					<p class="hero-subtitle">室内专属球场・风雨无阻・无懼烈日</p>
+					<button class="hero-btn btn-primary" onclick="openBooking()">马上预约</button>
 				</div>
 			</header>
 
-			<main class="main-content">
-				<div class="home-actions">
-					<button class="btn-secondary" onclick="showPage('events')">探索活动</button>
-					<button class="btn-secondary" onclick="showPage('membership')">会员与价格</button>
-					<button class="btn-secondary" onclick="showPage('faq')">常见问题</button>
-				</div>
-				<div class="court-card card" onclick="openBooking()">
-					<div class="court-image">
-						<img src="images/court.jpeg" alt="TRK匹克球场" class="court-img">
-						<div class="court-status">可预订</div>
-						<div class="court-overlay">
-							<button class="play-btn">▶</button>
+			<main class="home-content">
+				<!-- Service Cards -->
+				<section class="services">
+					<div class="service-card card" onclick="showPage('events')">
+						<div class="service-header">
+							<h3 class="service-title">OPEN PLAY 开放时段</h3>
+							<div class="service-price">¥350/人</div>
 						</div>
+						<p class="service-desc">需事先登记预约</p>
+						<div class="service-schedule">
+							<div>周一～周二：09:00-12:00</div>
+							<div>周三～周五：18:30-21:30</div>
+						</div>
+						<button class="service-btn btn-secondary">马上登记 保留席次</button>
 					</div>
 
-					<div class="court-info">
-						<h2 class="court-name">Urban Dinker Court</h2>
-						<p class="court-description">专业级匹克球场，配备优质地面和专业照明设备。位置便利，停车方便。</p>
-                        
-						<div class="price-info">
-							<span class="price">¥120</span>
-							<span class="duration">/ 小时</span>
-						</div>
-
-						<div class="court-features">
-							<div class="feature">
-								<span class="feature-icon">🏸</span>
-								<span class="feature-text">专业球拍</span>
-							</div>
-							<div class="feature">
-								<span class="feature-icon">💡</span>
-								<span class="feature-text">LED照明</span>
-							</div>
-							<div class="feature">
-								<span class="feature-icon">🅿️</span>
-								<span class="feature-text">免费停车</span>
+					<div class="service-card card" onclick="openBooking()">
+						<div class="service-header">
+							<h3 class="service-title">场地租借</h3>
+							<div class="service-pricing">
+								<div class="pricing-row">
+									<span>尖峰时段</span>
+									<span class="price-value">¥150/时/场</span>
+								</div>
+								<div class="pricing-row">
+									<span>非尖峰时段</span>
+									<span class="price-value">¥120/时/场</span>
+								</div>
 							</div>
 						</div>
-
-						<button class="book-btn btn-primary" onclick="openBooking()">
-							立即预订
-						</button>
+						<p class="service-desc">一次租借两单位，享95折优惠！</p>
+						<button class="service-btn btn-primary">马上预约</button>
 					</div>
-				</div>
 
-				<div class="info-section card">
-					<div class="info-header">
-						<h3 class="info-title">球场信息</h3>
+					<div class="service-card card">
+						<div class="service-header">
+							<h3 class="service-title">DUPR积分赛</h3>
+							<div class="service-subtitle">分级进行</div>
+						</div>
+						<div class="service-schedule">
+							<div>周一（3.0以下）：9:00-12:00</div>
+							<div>周二（3.0以上）：9:00-12:00</div>
+						</div>
+						<button class="service-btn btn-secondary" onclick="showPage('events')">报名参加</button>
 					</div>
-					<div class="info-content">
-						<div class="info-item">
-							<span class="info-icon">🕒</span>
-							<div class="info-text">
-								<span class="info-label">营业时间</span>
-								<span class="info-value">08:00 - 22:00</span>
-							</div>
+				</section>
+
+				<!-- Features -->
+				<section class="features">
+					<h2 class="section-title">我们的特色</h2>
+					<div class="feature-grid">
+						<div class="feature-item card">
+							<h3 class="feature-title">室内专属球场</h3>
+							<p class="feature-desc">风雨无阻・无懼烈日<br>匹克球专属球场地板画线不会眼花撩乱</p>
 						</div>
-						<div class="info-item">
-							<span class="info-icon">📞</span>
-							<div class="info-text">
-								<span class="info-label">联系电话</span>
-								<span class="info-value">400-888-8888</span>
-							</div>
-							<button class="info-action" onclick="makePhoneCall('400-888-8888')">拨打</button>
+						<div class="feature-item card">
+							<h3 class="feature-title">多样化练球设备</h3>
+							<p class="feature-desc">规划暖身练球区<br>多款专业球拍租借试打各类练球器材道具</p>
 						</div>
-						<div class="info-item">
-							<span class="info-icon">📍</span>
-							<div class="info-text">
-								<span class="info-label">球场地址</span>
-								<span class="info-value">TRK·达鲁酷运动餐酒吧(友邦金融中心店)<br>公平路209号友邦金融中心地下二层LG2层201号</span>
-							</div>
-							<button class="info-action" onclick="openMap()">导航</button>
+						<div class="feature-item card">
+							<h3 class="feature-title">用心规划</h3>
+							<p class="feature-desc">轻松自在的复合空间<br>惊喜餐饮・菜单每日更换</p>
+						</div>
+						<div class="feature-item card">
+							<h3 class="feature-title">推陈出新</h3>
+							<p class="feature-desc">多样化课程新颖活动<br>旨在交谊聚乐</p>
 						</div>
 					</div>
-				</div>
+				</section>
+
+				<!-- Location Info -->
+				<section class="location card">
+					<h3 class="location-title">如何抵达？</h3>
+					<div class="location-grid">
+						<div class="location-item">
+							<h4>地址</h4>
+							<p>公平路209号友邦金融中心地下二层LG2层201号</p>
+						</div>
+						<div class="location-item">
+							<h4>自行开车</h4>
+							<p>汽车收费停车场 ¥5/时<br>机车停车场免费</p>
+						</div>
+						<div class="location-item">
+							<h4>大众运输</h4>
+							<p>公车可搭至金融中心站<br>地铁2号线金融中心站</p>
+						</div>
+					</div>
+				</section>
 
 				<div class="footer-links">
 					<button class="footer-link" onclick="showPage('about')">关于我们</button>
@@ -267,12 +281,63 @@
 		<div id="events-page" class="page">
 			<header class="page-header">
 				<button class="back-btn" onclick="goBack()">←</button>
-				<h1 class="page-title">活动与社交场</h1>
+				<h1 class="page-title">活动时间表</h1>
 				<div class="header-placeholder"></div>
 			</header>
 			<div class="events-content">
 				<div id="dayStrip" class="day-strip"></div>
-				<div class="card">
+				
+				<!-- Schedule Grid -->
+				<div class="schedule-grid">
+					<div class="schedule-header">
+						<h3>OPEN PLAY 开放时段</h3>
+						<div class="schedule-price">¥350/人</div>
+					</div>
+					<div class="schedule-times">
+						<div class="time-slot available" onclick="bookOpenPlay('mon-tue', '09:00', '12:00')">
+							<div class="time-range">周一～周二 09:00-12:00</div>
+							<div class="spots-info">名额充足</div>
+						</div>
+						<div class="time-slot full" onclick="waitlistOpenPlay('wed-fri')">
+							<div class="time-range">周三～周五 18:30-21:30</div>
+							<div class="spots-info">已满 可候补</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="schedule-grid">
+					<div class="schedule-header">
+						<h3>DUPR积分赛</h3>
+						<div class="schedule-subtitle">分级进行</div>
+					</div>
+					<div class="schedule-times">
+						<div class="time-slot available" onclick="bookDupr('mon', '3.0-')">
+							<div class="time-range">周一（3.0以下）09:00-12:00</div>
+							<div class="spots-info">6/16人</div>
+						</div>
+						<div class="time-slot limited" onclick="bookDupr('tue', '3.0+')">
+							<div class="time-range">周二（3.0以上）09:00-12:00</div>
+							<div class="spots-info">13/16人</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="schedule-grid">
+					<div class="schedule-header">
+						<h3>场地租借</h3>
+						<div class="schedule-pricing">
+							<div>尖峰时段 ¥150/时</div>
+							<div>非尖峰时段 ¥120/时</div>
+						</div>
+					</div>
+					<div class="schedule-note">
+						一次租借两单位，享95折优惠！
+					</div>
+					<button class="schedule-btn btn-primary" onclick="openBooking()">马上预约</button>
+				</div>
+
+				<!-- Legacy events list for filtered view -->
+				<div class="card" style="display:none">
 					<div class="filters-row">
 						<select id="filterLevel" class="select" onchange="renderEvents()">
 							<option value="">全部水平</option>
