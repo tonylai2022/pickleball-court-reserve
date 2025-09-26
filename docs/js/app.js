@@ -1,12 +1,191 @@
 'use strict';
 
-// Simple SPA state
+const DEMO_MODE = true;
+
+class DemoApiClient {
+  constructor() {
+    this.token = 'demo-token';
+    this.user = {
+      _id: 'demo-user',
+      name: '演示用户',
+      nickname: 'Demo Player',
+      phone: '13800138000',
+      status: 'active',
+      token: 'demo-token'
+    };
+    this.bookings = [];
+    this.courts = [
+      {
+        _id: 'demo-court-1',
+        name: 'TRK 匹克球俱乐部 - 室内1号场',
+        pricePerHour: 120,
+        location: '友邦金融中心 LG2-201'
+      },
+      {
+        _id: 'demo-court-2',
+        name: 'TRK 匹克球俱乐部 - 室内2号场',
+        pricePerHour: 150,
+        location: '友邦金融中心 LG2-202'
+      }
+    ];
+    this.isWeChat = false;
+    this.isMiniProgram = false;
+    this.listeners = new Map();
+
+    localStorage.setItem('authToken', this.token);
+    localStorage.setItem('user', JSON.stringify(this.user));
+  }
+
+  on(event, handler) {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, []);
+    }
+    this.listeners.get(event).push(handler);
+  }
+
+  emit(event, payload) {
+    (this.listeners.get(event) || []).forEach((handler) => handler(payload));
+  }
+
+  isAuthenticated() {
+    return !!this.user;
+  }
+
+  getCurrentUser() {
+    return this.user;
+  }
+
+  async getProfile() {
+    return this.user;
+  }
+
+  async demoLogin() {
+    localStorage.setItem('authToken', this.token);
+    localStorage.setItem('user', JSON.stringify(this.user));
+    return { user: this.user, token: this.token, success: true };
+  }
+
+  async loginWithWeChat() {
+    return this.demoLogin();
+  }
+
+  async loginTraditional() {
+    return this.demoLogin();
+  }
+
+  async register() {
+    return this.demoLogin();
+  }
+
+  logout() {
+    // Demo mode keeps user logged in by default
+  }
+
+  async getCourts() {
+    return this.courts;
+  }
+
+  async getCourtAvailability(courtId, date) {
+    const slots = [];
+    for (let hour = 8; hour < 22; hour++) {
+      const start = `${String(hour).padStart(2, '0')}:00`;
+      const end = `${String(hour + 1).padStart(2, '0')}:00`;
+      slots.push({ startTime: start, endTime: end });
+    }
+    return { courtId, date, availableSlots: slots };
+  }
+
+  async createBooking(bookingData) {
+    const bookingId = `demo-booking-${Date.now()}`;
+    const paymentId = `demo-payment-${Date.now()}`;
+    const court = this.courts.find(c => c._id === bookingData.courtId);
+    const rate = court?.pricePerHour ?? 120;
+    const startHour = parseInt(bookingData.startTime?.split(':')[0] ?? '0', 10);
+    const endHour = parseInt(bookingData.endTime?.split(':')[0] ?? startHour, 10);
+    const hours = Math.max(1, endHour - startHour);
+    const total = rate * hours;
+    const booking = {
+      _id: bookingId,
+      court: bookingData.courtId,
+      courtName: court?.name || 'TRK 匹克球俱乐部',
+      date: bookingData.date,
+      startTime: bookingData.startTime,
+      endTime: bookingData.endTime,
+      totalAmount: total,
+      payment: paymentId,
+      status: 'confirmed'
+    };
+
+    this.bookings.push(booking);
+
+    return {
+      booking,
+      paymentParams: {
+        success: true
+      }
+    };
+  }
+
+  async processWeChatPayment() {
+    return { success: true };
+  }
+
+  async getPaymentStatus() {
+    return { status: 'completed' };
+  }
+
+  async getUserBookings() {
+    return this.bookings;
+  }
+
+  connectWebSocket() { }
+  disconnectWebSocket() { }
+  subscribeToCourtUpdates() { }
+  unsubscribeFromCourtUpdates() { }
+}
+
+(function ensureApiClientReady() {
+  if (DEMO_MODE) {
+    window.apiClient = new DemoApiClient();
+    window.DEMO_MODE = true;
+    return;
+  }
+
+  if (window.apiClient) {
+    return;
+  }
+
+  const instantiateIfPossible = () => {
+    if (typeof window.ApiClient === 'function' && !window.apiClient) {
+      window.apiClient = new window.ApiClient();
+    }
+  };
+
+  instantiateIfPossible();
+
+  if (!window.apiClient && !DEMO_MODE) {
+    const script = document.createElement('script');
+    script.src = 'js/api.js';
+    script.onload = instantiateIfPossible;
+    document.head.appendChild(script);
+  }
+
+})();
+
+const apiClient = window.apiClient;
+
+// Enhanced SPA state with backend integration
 const state = {
   currentPage: 'home',
   history: [],
   isMobileNavOpen: false,
+  isLoading: false,
+  courts: [], // Available courts from backend
+  selectedCourtId: null,
+  availableSlots: [], // Available time slots from backend
   booking: {
-    court: 'Urban Dinker Court',
+    courtId: null,
+    court: 'TRK 匹克球俱乐部',
     courtAddress: 'TRK·达鲁酷运动餐酒吧(友邦金融中心店)\n公平路209号友邦金融中心地下二层LG2层201号',
     courtPhone: '400-888-8888',
     date: null,
@@ -18,12 +197,18 @@ const state = {
     paymentMethod: 'wechat',
     confirmationNumber: '',
     players: 2,
-    equipmentSet: false, // Changed from addons to equipmentSet
+    equipmentSet: false,
+    equipment: { racquets: 0, balls: 0 }, // Backend format
+    addons: { paddles: 0, balls: 0 },
     promo: null,
     isMember: false,
-    fees: { base: 0, equipment: 0, discount: 0, service: 0, tax: 0, total: 0 }, // Changed addons to equipment
-    selectedSlots: [] // array of {start,end}
-  }
+    fees: { base: 0, equipment: 0, discount: 0, service: 0, tax: 0, total: 0 },
+    selectedSlots: [], // array of {start,end}
+    bookingId: null, // Backend booking ID
+    paymentId: null // Backend payment ID
+  },
+  user: null,
+  isAuthenticated: false
 };
 
 // Demo events catalog (original sample data)
@@ -40,6 +225,111 @@ const $$ = sel => Array.from(document.querySelectorAll(sel));
 const show = el => el.classList.add('active');
 const hide = el => el.classList.remove('active');
 
+// Load user booking history
+async function loadUserBookings() {
+  if (!state.user || !state.user.token) {
+    console.log('User not authenticated, cannot load bookings');
+    return [];
+  }
+
+  try {
+    const bookings = await apiClient.getUserBookings();
+    return bookings || [];
+  } catch (error) {
+    console.error('Failed to load user bookings:', error);
+    return [];
+  }
+}
+
+// Update about page authentication UI
+function updateAboutPageAuth() {
+  const authSection = $('#user-auth-section');
+  const userActions = $('#user-actions');
+
+  if (!authSection) return;
+
+  if (state.user && state.user.token) {
+    // Show user info
+    authSection.innerHTML = `
+      <div class="user-info">
+        <div class="user-avatar">${state.user.nickname ? state.user.nickname[0].toUpperCase() : 'U'}</div>
+        <div>
+          <div style="font-weight: 600;">${state.user.nickname || '用户'}</div>
+          <div style="font-size: 0.875rem; color: var(--gray-600);">已登录</div>
+        </div>
+        <button class="logout-button" onclick="handleLogout()">退出</button>
+      </div>
+    `;
+
+    // Show user actions
+    if (userActions) {
+      userActions.style.display = 'block';
+    }
+  } else {
+    // Show login prompt
+    authSection.innerHTML = `
+      <div class="auth-section">
+        <h3>登录账户</h3>
+        <p>登录后可查看预订记录和享受更多服务</p>
+        <button class="auth-button" onclick="showLoginPrompt()">
+          🔑 立即登录
+        </button>
+      </div>
+    `;
+
+    // Hide user actions
+    if (userActions) {
+      userActions.style.display = 'none';
+    }
+  }
+}
+
+// Display booking history 
+async function showBookingHistory() {
+  try {
+    setLoading(true, '加载预订记录...');
+    const bookings = await loadUserBookings();
+
+    const historyHTML = `
+      <div class="booking-history">
+        <h3>我的预订记录</h3>
+        ${bookings.length === 0 ?
+        '<p class="no-bookings">暂无预订记录</p>' :
+        bookings.map(booking => `
+            <div class="booking-item">
+              <div class="booking-header">
+                <strong>${booking.courtName || booking.court}</strong>
+                <span class="booking-date">${new Date(booking.date).toLocaleDateString()}</span>
+              </div>
+              <div class="booking-details">
+                <span>${booking.timeSlot || `${booking.startTime}-${booking.endTime}`}</span>
+                <span class="booking-status status-${booking.status}">${booking.status === 'confirmed' ? '已确认' :
+            booking.status === 'pending' ? '待确认' :
+              booking.status === 'cancelled' ? '已取消' : booking.status
+          }</span>
+              </div>
+              <div class="booking-amount">¥${booking.totalAmount || booking.total}</div>
+            </div>
+          `).join('')
+      }
+      </div>
+    `;
+
+    openModal({
+      title: '预订记录',
+      content: historyHTML,
+      showCancel: false,
+      confirmText: '关闭'
+    });
+
+  } catch (error) {
+    console.error('Failed to show booking history:', error);
+    showToast('加载预订记录失败');
+  } finally {
+    setLoading(false);
+  }
+}
+
 function showToast(message, duration = 2000) {
   const toast = $('#toast');
   $('#toast-message').textContent = message;
@@ -49,7 +339,7 @@ function showToast(message, duration = 2000) {
 
 function openModal({ title = '提示', message = '', onConfirm = null, confirmText = '确定', cancelText = '取消', showCancel = true } = {}) {
   $('#modal-title').textContent = title;
-  $('#modal-message').textContent = message;
+  $('#modal-message').innerHTML = message; // Use innerHTML to allow HTML content
   const overlay = $('#modal-overlay');
   const confirmBtn = $('#modal-confirm');
   const cancelBtn = $('#modal-cancel');
@@ -61,7 +351,16 @@ function openModal({ title = '提示', message = '', onConfirm = null, confirmTe
 }
 function showModal() { $('#modal-overlay').classList.add('show'); }
 function closeModal() { $('#modal-overlay').classList.remove('show'); }
-function setLoading(isLoading) { $('#loading').classList.toggle('show', isLoading); }
+function setLoading(isLoading, message = '加载中...') {
+  const loader = $('#loading');
+  const loadingMessage = loader?.querySelector('.loading-message');
+
+  if (loadingMessage) {
+    loadingMessage.textContent = message;
+  }
+
+  loader.classList.toggle('show', isLoading);
+}
 
 // Mobile Navigation Functions
 function toggleMobileMenu() {
@@ -117,6 +416,7 @@ function showPage(pageId) {
   // Handle page-specific rendering
   if (pageId === 'events') { renderEvents(); }
   if (pageId === 'booking') { renderDates(); }
+  if (pageId === 'about') { updateAboutPageAuth(); }
 }
 
 function updateNavActiveStates(pageId) {
@@ -204,12 +504,219 @@ function addTouchSupport() {
   });
 }
 
-// Home
-function openBooking() {
-  showPage('booking');
-  renderDates();
-  renderTimeSlots();
-  updateSummary();
+// Authentication functions
+async function initializeAuth() {
+  if (apiClient.isAuthenticated()) {
+    state.user = apiClient.getCurrentUser();
+    state.isAuthenticated = true;
+
+    try {
+      // Refresh user profile
+      const profile = await apiClient.getProfile();
+      state.user = profile;
+      updateUIForAuthenticatedUser();
+    } catch (error) {
+      console.error('Failed to refresh profile:', error);
+      // Token might be expired, show login
+      showLoginPrompt();
+    }
+  } else {
+    showLoginPrompt();
+  }
+}
+
+async function handleWeChatLogin() {
+  try {
+    setLoading(true);
+
+    // Check if we're in WeChat environment
+    if (apiClient.isWeChat || apiClient.isMiniProgram) {
+      // In a real implementation, we would get the code from WeChat SDK
+      // For demo purposes, we'll simulate the login
+      showToast('检测到微信环境，正在登录...');
+
+      // Simulate WeChat OAuth code (in real app, this comes from WeChat SDK)
+      const mockCode = 'demo_wechat_code_' + Date.now();
+      const loginType = apiClient.isMiniProgram ? 'miniprogram' : 'oauth';
+
+      const result = await apiClient.loginWithWeChat(mockCode, loginType);
+
+      state.user = result.user;
+      state.isAuthenticated = true;
+
+      updateUIForAuthenticatedUser();
+      showToast('微信登录成功！');
+
+      if (result.isNewUser) {
+        showToast('欢迎新用户！建议绑定手机号码', 3000);
+      }
+
+    } else {
+      // Not in WeChat environment
+      showTraditionalLogin();
+    }
+  } catch (error) {
+    console.error('WeChat login failed:', error);
+    showToast('登录失败: ' + error.message);
+    showTraditionalLogin();
+  } finally {
+    setLoading(false);
+  }
+}
+
+function showTraditionalLogin() {
+  // Create a simple login form (in a real app, you'd have a proper login page)
+  openModal({
+    title: '手机号登录',
+    message: '演示环境：使用任意手机号和密码"123456"登录',
+    confirmText: '登录',
+    onConfirm: async () => {
+      try {
+        setLoading(true);
+        // First try demo login for guaranteed success
+        const result = await apiClient.demoLogin();
+
+        state.user = result.user;
+        state.isAuthenticated = true;
+
+        updateUIForAuthenticatedUser();
+        showToast('登录成功！');
+      } catch (error) {
+        console.error('Traditional login failed:', error);
+        // Fallback: try traditional login then register
+        try {
+          // Demo credentials
+          const phone = '13800138000';
+          const password = '123456';
+
+          const result = await apiClient.loginTraditional(phone, password);
+
+          state.user = result.user;
+          state.isAuthenticated = true;
+
+          updateUIForAuthenticatedUser();
+          showToast('登录成功！');
+        } catch (loginError) {
+          console.warn('Traditional login also failed, attempting register:', loginError);
+          try {
+            const result = await apiClient.register({
+              name: '演示用户',
+              phone: '13800138000',
+              password: '123456'
+            });
+
+            state.user = result.user;
+            state.isAuthenticated = true;
+
+            updateUIForAuthenticatedUser();
+            showToast('注册并登录成功！');
+          } catch (regError) {
+            showToast('登录失败: ' + regError.message);
+          }
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+  });
+}
+
+function updateUIForAuthenticatedUser() {
+  // Update UI elements to show user is logged in
+  const userElements = document.querySelectorAll('.user-name');
+  userElements.forEach(el => {
+    el.textContent = state.user?.name || '用户';
+  });
+
+  // Show authenticated user features
+  const authElements = document.querySelectorAll('.auth-required');
+  authElements.forEach(el => {
+    el.style.display = 'block';
+  });
+
+  // Update about page if currently viewing
+  if (state.currentPage === 'about') {
+    updateAboutPageAuth();
+  }
+}
+
+// Handle user logout
+function handleLogout() {
+  openModal({
+    title: '确认退出',
+    message: '确定要退出登录吗？',
+    confirmText: '退出',
+    cancelText: '取消',
+    onConfirm: () => {
+      // Clear user state
+      state.user = null;
+      state.isAuthenticated = false;
+
+      // Clear localStorage
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userInfo');
+
+      // Disconnect WebSocket if connected
+      if (apiClient.disconnectWebSocket) {
+        apiClient.disconnectWebSocket();
+      }
+
+      showToast('已退出登录');
+
+      // Update UI
+      updateUIForAuthenticatedUser();
+
+      // Update about page if currently viewing
+      if (state.currentPage === 'about') {
+        updateAboutPageAuth();
+      }
+    }
+  });
+}
+
+// Enhanced Home and Booking functions
+async function openBooking() {
+  if (!state.isAuthenticated) {
+    showLoginPrompt();
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    // Load courts data from backend
+    await loadCourtsData();
+
+    showPage('booking');
+    renderDates();
+    await renderTimeSlots();
+    updateSummary();
+  } catch (error) {
+    console.error('Failed to open booking:', error);
+    showToast('加载预订信息失败: ' + error.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function loadCourtsData() {
+  try {
+    const courts = await apiClient.getCourts();
+    state.courts = courts;
+
+    // Select first available court if none selected
+    if (!state.selectedCourtId && courts.length > 0) {
+      state.selectedCourtId = courts[0]._id;
+      state.booking.courtId = courts[0]._id;
+      state.booking.court = courts[0].name;
+      state.booking.pricePerHour = courts[0].pricePerHour;
+    }
+
+    return courts;
+  } catch (error) {
+    console.error('Failed to load courts:', error);
+    throw error;
+  }
 }
 
 // Booking - Dates and times
@@ -232,30 +739,75 @@ function renderDates() {
   container.innerHTML = items.join('');
 }
 
-function selectDate(iso) {
+async function selectDate(iso) {
   state.booking.date = iso;
   // Reset time selection when date changes
   state.booking.selectedSlots = [];
   state.booking.startTime = null;
   state.booking.endTime = null;
   state.booking.hours = 0;
-  calcFees();
-  renderDates();
-  updateSummary();
-  $('#confirmBooking').disabled = !(state.booking.date && state.booking.startTime);
+
+  try {
+    setLoading(true);
+
+    // Load available slots from backend
+    if (state.selectedCourtId) {
+      const availabilityData = await apiClient.getCourtAvailability(state.selectedCourtId, iso);
+      if (availabilityData) {
+        state.availableSlots = availabilityData.availableSlots;
+      }
+    }
+
+    calcFees();
+    renderDates();
+    await renderTimeSlots(); // Make async to handle backend data
+    updateSummary();
+    $('#confirmBooking').disabled = !(state.booking.date && state.booking.startTime);
+  } catch (error) {
+    console.error('Failed to load availability:', error);
+    showToast('加载时间段失败: ' + error.message);
+  } finally {
+    setLoading(false);
+  }
 }
 
-function renderTimeSlots() {
+async function renderTimeSlots() {
   const container = $('#timeGrid');
+  if (!container) return;
+
   const items = [];
   const startHour = 8, endHour = 22; // 08:00-22:00
+
   for (let h = startHour; h < endHour; h++) {
     const start = String(h).padStart(2, '0') + ':00';
     const end = String(h + 1).padStart(2, '0') + ':00';
     const key = `${start}-${end}`;
-    const active = state.booking.selectedSlots.some(s => s.start === start) ? ' active' : '';
-    items.push(`<div class="time-slot${active}" data-key="${key}" onclick="toggleSlot('${start}','${end}')">${start} - ${end}</div>`);
+
+    // Check if slot is available from backend data
+    const isAvailable = state.availableSlots.some(slot =>
+      slot.startTime === start && slot.endTime === end
+    );
+
+    const isSelected = state.booking.selectedSlots.some(s => s.start === start);
+
+    let classes = 'time-slot';
+    if (isSelected) {
+      classes += ' active selected';
+    } else if (isAvailable) {
+      classes += ' available';
+    } else {
+      classes += ' occupied';
+    }
+
+    const disabled = !isAvailable && !isSelected ? 'disabled' : '';
+    const onClick = disabled ? '' : `onclick="toggleSlot('${start}','${end}')"`;
+
+    items.push(`<div class="${classes}" data-key="${key}" data-start="${start}" data-end="${end}" ${disabled} ${onClick}>
+      <div class="time-range">${start} - ${end}</div>
+      <div class="slot-status">${isSelected ? '已选择' : isAvailable ? '可预订' : '已预订'}</div>
+    </div>`);
   }
+
   container.innerHTML = items.join('');
 }
 
@@ -311,20 +863,71 @@ function updateSummary() {
   $('#totalPrice').textContent = `¥${state.booking.fees.total || 0}`;
   // per-person on booking page
   const per = state.booking.players > 0 ? Math.round((state.booking.fees.total / state.booking.players) * 100) / 100 : 0;
-  $('#perPerson').textContent = `人均 ¥${per}`;
+  const perPersonEl = document.getElementById('perPerson');
+  if (perPersonEl) {
+    perPersonEl.textContent = `人均 ¥${per}`;
+  }
   // update qty labels
-  $('#qty-paddles').textContent = state.booking.addons.paddles;
-  $('#qty-balls').textContent = state.booking.addons.balls;
+  const paddlesEl = document.getElementById('qty-paddles');
+  if (paddlesEl) {
+    paddlesEl.textContent = state.booking.addons?.paddles ?? 0;
+  }
+  const ballsEl = document.getElementById('qty-balls');
+  if (ballsEl) {
+    ballsEl.textContent = state.booking.addons?.balls ?? 0;
+  }
   const qp = document.getElementById('qty-players');
   if (qp) { qp.textContent = state.booking.players; }
 }
 
-function goToPayment() {
+async function goToPayment() {
   if (!state.booking.date || !state.booking.startTime) {
     return showToast('请选择日期和时间');
   }
-  showPage('payment');
-  renderOrder();
+
+  if (!state.isAuthenticated) {
+    showLoginPrompt();
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    // Prepare booking data for backend
+    const bookingData = {
+      courtId: state.booking.courtId,
+      date: state.booking.date,
+      startTime: state.booking.startTime,
+      endTime: state.booking.endTime,
+      equipment: {
+        racquets: state.booking.equipmentSet ? 4 : 0,
+        balls: state.booking.equipmentSet ? 2 : 0
+      },
+      notes: state.booking.promo ? `优惠码: ${state.booking.promo}` : undefined
+    };
+
+    // Create booking on backend (this will also create payment order)
+    const result = await apiClient.createBooking(bookingData);
+
+    if (result.booking && result.paymentParams) {
+      state.booking.bookingId = result.booking._id;
+      state.booking.paymentId = result.booking.payment;
+      state.booking.confirmationNumber = result.booking._id;
+
+      // Store payment parameters for WeChat Pay
+      state.paymentParams = result.paymentParams;
+
+      showPage('payment');
+      renderOrder();
+    } else {
+      throw new Error('预订创建失败');
+    }
+  } catch (error) {
+    console.error('Failed to create booking:', error);
+    showToast('创建预订失败: ' + error.message);
+  } finally {
+    setLoading(false);
+  }
 }
 
 // Payment
@@ -346,40 +949,110 @@ function renderOrder() {
   if (payBtn) { payBtn.disabled = true; }
 }
 
-function processPayment() {
+async function processPayment() {
+  if (!state.paymentParams) {
+    showToast('支付参数错误，请重新预订');
+    return;
+  }
+
   openModal({
     title: '微信支付',
-    message: `将支付 ¥${state.booking.fees.total}，用于预订${state.booking.court}。\n本演示站仅模拟支付流程。`,
+    message: `将支付 ¥${state.booking.fees.total}，用于预订${state.booking.court}。`,
     confirmText: '确认支付',
-    onConfirm: () => {
-      setLoading(true);
-      // Simulate async payment
-      setTimeout(() => {
+    onConfirm: async () => {
+      try {
+        setLoading(true);
+
+        // Process WeChat payment
+        const paymentResult = await apiClient.processWeChatPayment(state.paymentParams);
+
+        if (paymentResult.success || paymentResult) {
+          showToast('支付成功');
+
+          // Wait a moment for webhook to process
+          setTimeout(async () => {
+            await checkPaymentStatus();
+          }, 2000);
+
+        } else {
+          throw new Error('支付失败');
+        }
+      } catch (error) {
+        console.error('Payment processing failed:', error);
+        showToast('支付失败: ' + error.message);
+
+        // For demo purposes, allow manual success
+        openModal({
+          title: '支付失败',
+          message: '真实支付失败，是否继续演示流程？',
+          confirmText: '继续演示',
+          cancelText: '取消',
+          onConfirm: () => {
+            showToast('演示支付成功');
+            toSuccess();
+          }
+        });
+      } finally {
         setLoading(false);
-        const id = genConfirmationNumber();
-        state.booking.confirmationNumber = id;
-        showToast('支付成功');
-        toSuccess();
-      }, 900);
+      }
     }
   });
 }
 
+async function checkPaymentStatus() {
+  if (!state.booking.paymentId) return;
+
+  try {
+    const paymentStatus = await apiClient.getPaymentStatus(state.booking.paymentId);
+
+    if (paymentStatus && paymentStatus.status === 'completed') {
+      toSuccess();
+    } else {
+      // Payment might still be processing
+      showToast('支付处理中，请稍候...');
+      setTimeout(checkPaymentStatus, 3000);
+    }
+  } catch (error) {
+    console.error('Failed to check payment status:', error);
+    // Continue to success for demo
+    toSuccess();
+  }
+}
+
 function toSuccess() {
   showPage('success');
-  $('#confirmationNumber').textContent = state.booking.confirmationNumber;
+
+  // Use backend booking ID or generate fallback
+  const confirmationNumber = state.booking.confirmationNumber ||
+    state.booking._id ||
+    genConfirmationNumber();
+
+  $('#confirmationNumber').textContent = confirmationNumber;
+
   const rows = [
     ['球场', state.booking.court],
-    ['地址', state.booking.courtAddress.replace(/\n/g, '，')],
+    ['地址', state.booking.courtAddress?.replace(/\n/g, '，') || '深圳市南山区'],
     ['日期', state.booking.date],
     ['时间', `${state.booking.startTime} - ${state.booking.endTime}（${state.booking.hours} 小时）`],
     ['参与人数', `${state.booking.players} 人`],
     ['支付方式', '微信支付'],
     ['实付金额', `¥${state.booking.fees.total}`]
   ];
+
+  if (state.booking.status) {
+    rows.push(['预订状态', state.booking.status === 'confirmed' ? '已确认' : '处理中']);
+  }
+
   $('#bookingDetails').innerHTML = rows.map(([k, v]) => `<div class="detail-row"><span class="detail-label">${k}</span><span class="detail-value">${v}</span></div>`).join('');
   const per = state.booking.players > 0 ? Math.round((state.booking.fees.total / state.booking.players) * 100) / 100 : 0;
   $('#perPersonSuccess').textContent = `人均 ¥${per}`;
+
+  // Store booking for future reference
+  localStorage.setItem('lastBooking', JSON.stringify({
+    confirmationNumber,
+    bookingDetails: state.booking,
+    timestamp: new Date().toISOString()
+  }));
 }
 
 // Success actions
@@ -437,7 +1110,7 @@ function bookOpenPlay(days, start, end) {
     }
   }
 
-  state.booking.date = targetDate.toISOString().slice(0, 10);
+  state.booking.date = targetDate.toISOString().slice(10, 0);
   const startHour = parseInt(start.split(':')[0]);
   const endHour = parseInt(end.split(':')[0]);
 
@@ -1008,25 +1681,74 @@ function initializeMobileFeatures() {
 }
 
 // Init
-window.addEventListener('DOMContentLoaded', () => {
-  // Initialize mobile features first
-  initializeMobileFeatures();
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    // Initialize authentication first
+    await initializeAuth();
 
-  // Show home page
-  showPage('home');
+    // Initialize mobile features
+    initializeMobileFeatures();
 
-  // Preload booking widgets to avoid first-time jank
-  renderDates();
-  renderTimeSlots();
-  calcFees();
-  updateSummary();
+    // Initialize WebSocket for real-time updates
+    initializeWebSocket();
 
-  // Set initial navigation state
-  updateNavActiveStates();
+    // Show home page
+    showPage('home');
 
-  // Initialize enhanced booking interface
-  initializeEnhancedBooking();
+    // Preload booking widgets to avoid first-time jank
+    renderDates();
+    renderTimeSlots();
+    calcFees();
+    updateSummary();
+
+    // Set initial navigation state
+    updateNavActiveStates();
+
+    // Initialize enhanced booking interface
+    initializeEnhancedBooking();
+
+  } catch (error) {
+    console.error('App initialization failed:', error);
+    showToast('应用初始化失败，请刷新页面重试');
+  }
 });
+
+// Initialize WebSocket for real-time updates
+function initializeWebSocket() {
+  if (apiClient.connectWebSocket) {
+    apiClient.connectWebSocket();
+
+    // Set up event handlers for real-time updates
+    apiClient.on('bookingUpdate', (data) => {
+      console.log('Booking update received:', data);
+      // Refresh current view if on booking page
+      if (state.currentView === 'booking' && state.selectedDate) {
+        loadAvailability(state.selectedCourtId, state.selectedDate);
+      }
+      showToast('预订信息已更新');
+    });
+
+    apiClient.on('courtStatusUpdate', (data) => {
+      console.log('Court status update:', data);
+      // Refresh availability if viewing this court
+      if (state.selectedCourtId === data.courtId && state.selectedDate === data.date) {
+        loadAvailability(data.courtId, data.date);
+      }
+    });
+
+    apiClient.on('paymentUpdate', (data) => {
+      console.log('Payment update:', data);
+      if (state.booking.paymentId === data.paymentId) {
+        if (data.status === 'completed') {
+          showToast('支付成功确认');
+          toSuccess();
+        } else if (data.status === 'failed') {
+          showToast('支付失败');
+        }
+      }
+    });
+  }
+}
 
 function initializeEnhancedBooking() {
   // Set up booking step navigation
@@ -1093,3 +1815,56 @@ function isPeakHour(hour) {
   const h = parseInt(hour.split(':')[0]);
   return h >= 18 || h <= 8; // Evening or early morning
 }
+
+// Global error handlers
+window.addEventListener('error', (event) => {
+  console.error('Global error:', event.error);
+  showToast('应用出现错误，请刷新页面重试');
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+  showToast('网络请求失败，请检查网络连接');
+  event.preventDefault();
+});
+
+// Demo login handler
+async function handleDemoLogin() {
+  try {
+    setLoading(true, '正在为您准备演示环境...');
+    const result = await apiClient.demoLogin();
+    state.user = result.user;
+    state.isAuthenticated = true;
+    updateUIForAuthenticatedUser();
+    closeModal();
+    showToast('演示登录成功！');
+  } catch (error) {
+    showToast('演示登录失败: ' + error.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
+// Enhanced login prompt with demo button
+function showLoginPrompt() {
+  if (!state.isAuthenticated) {
+    const message = `
+      <p>请登录以使用预订功能</p>
+      <button class="btn demo-login-button" onclick="handleDemoLogin()">
+        🚀 快速演示登录
+      </button>
+    `;
+
+    openModal({
+      title: '登录账户',
+      message: message,
+      confirmText: '微信登录',
+      cancelText: '手机登录',
+      showCancel: true,
+      onConfirm: handleWeChatLogin,
+      onCancel: showTraditionalLogin
+    });
+  }
+}
+
+window.handleDemoLogin = handleDemoLogin;
