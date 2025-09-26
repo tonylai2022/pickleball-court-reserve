@@ -1,0 +1,15 @@
+{
+    "name": "pickleball-court-reserve-dev",
+    "private": true,
+    "version": "1.0.0",
+    "description": "Developer tooling for TRK Pickleball Court Reserve demo",
+    "scripts": {
+        "frontend:dev": "browser-sync start --server docs --port 8080 --files \"docs/**/*.*\" --no-open --no-notify --reload-delay 200",
+        "backend:dev": "cd backend && npm run dev",
+        "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\""
+    },
+    "devDependencies": {
+        "browser-sync": "^2.29.3",
+        "concurrently": "^8.2.2"
+    }
+}

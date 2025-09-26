@@ -84,19 +84,57 @@
 		<main id="home-page" class="page active" role="main">
 			<!-- Hero Section -->
 			<section class="hero-section">
-				<div class="hero-background">
-					<img src="images/court.jpeg" alt="TRK匹克球场" class="hero-bg-image">
-					<div class="hero-overlay"></div>
-				</div>
-				<div class="hero-content">
-					<div class="hero-text">
+				<div class="hero-inner">
+					<div class="hero-copy">
+						<span class="hero-eyebrow">全新匹克球体验</span>
 						<h1 class="hero-title">TRK 匹克球俱乐部</h1>
-						<p class="hero-subtitle">室内专属球场・风雨无阻・无懼烈日</p>
-						<p class="hero-description">专业匹克球场地板画线，多样化练球设备，轻松自在的复合空间</p>
+						<p class="hero-description">专业匹克球场地板画线、多样化练球设备与轻松自在的复合空间，为你的每一场对战保驾护航。</p>
+						<div class="hero-actions">
+							<button class="btn-primary" onclick="openBooking()">马上预约</button>
+							<button class="btn-secondary" onclick="showPage('about')">
+								<span>了解空间亮点 →</span>
+							</button>
+						</div>
+						<div class="hero-meta">
+							<div class="hero-metric">
+								<strong>300+</strong>
+								<span>每月开放时段</span>
+							</div>
+							<div class="hero-metric">
+								<strong>全天候</strong>
+								<span>风雨无阻的室内球场</span>
+							</div>
+							<div class="hero-metric">
+								<strong>95%</strong>
+								<span>会员推荐指数</span>
+							</div>
+						</div>
 					</div>
-					<div class="hero-actions">
-						<button class="hero-cta-btn btn-primary" onclick="openBooking()">马上预约</button>
-						<button class="hero-secondary-btn btn-outline" onclick="showPage('about')">了解更多</button>
+					<div class="hero-visual">
+						<div class="hero-card">
+							<div class="hero-card-header">
+								<h3>今日热门场次</h3>
+								<span class="hero-court-chip">Indoor Court A</span>
+							</div>
+							<div class="hero-card-body">
+								<div class="hero-card-meta">
+									<span>开放时段</span>
+									<span>18:30 - 21:30</span>
+								</div>
+								<div class="hero-card-meta">
+									<span>剩余席次</span>
+									<span>3 / 12</span>
+								</div>
+								<div class="hero-card-meta">
+									<span>特色</span>
+									<span>教练指导・设备齐全</span>
+								</div>
+							</div>
+							<div class="hero-card-footer">
+								<button class="btn-secondary" onclick="openBooking()">立即预约</button>
+								<button class="btn-outline" onclick="showPage('events')">查看开放时段</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>

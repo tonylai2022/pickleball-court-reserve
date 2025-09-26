@@ -73,6 +73,27 @@ pickleball_court_reserve/
 5. **Choose your preferred payment method**
 6. **Complete the simulated booking**
 
+### 🔁 Live Reload Development Setup
+
+For a smoother workflow with automatic reloads on code changes:
+
+1. Install dependencies once from the project root:
+	```powershell
+	npm install
+	```
+	This installs BrowserSync and Concurrently declared in the root `package.json`, and nodemon inside `backend/package.json`.
+
+2. Start both the backend (with nodemon) and the frontend (BrowserSync serving `docs/` on port 8080) with one command:
+	```powershell
+	npm run dev
+	```
+
+	This is equivalent to running the following in parallel:
+	- `npm run backend:dev` → `nodemon server.js` inside `backend/`
+	- `npm run frontend:dev` → `browser-sync` serving `docs/` with live reload
+
+3. Edit files under `backend/` or `docs/` and the browser will refresh automatically without manual restarts.
+
 ## 💡 Usage Instructions
 
 ### Booking Flow

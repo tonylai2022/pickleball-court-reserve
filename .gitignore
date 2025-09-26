@@ -1,0 +1,79 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+backend/node_modules/
+
+# Environment files
+.env
+.env.*
+backend/.env
+backend/.env.*
+!.env.example
+backend/!.env.example
+
+# Local environments and virtualenvs
+.venv/
+venv/
+.envrc
+
+# Build outputs
+build/
+dist/
+.temp/
+.tmp/
+.temp-cache/
+coverage/
+.next/
+out/
+
+# Frontend tooling caches
+.cache/
+.parcel-cache/
+.esbuild/
+.rollup.cache/
+storybook-static/
+.sass-cache/
+
+# Testing artifacts
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+.playwright-cache/
+
+# IDE & editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Misc backups
+*.orig
+*.rej
+*.bak
+*.tmp
+
+# WeChat/mini-program build artifacts
+miniprogram_npm/
+wechat-devtools-backups/
